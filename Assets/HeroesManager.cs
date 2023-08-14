@@ -39,7 +39,8 @@ public class HeroesManager : MonoBehaviour
 
     public bool hasEnoughCardsToUpgrade(int _heroIndex)
     {
-        if(all_HeroData[_heroIndex].currentCards >= all_HeroData[_heroIndex].requireCardsToUnlock)
+        int currentHeroLevel = all_HeroData[_heroIndex].currentLevel;
+        if(all_HeroData[_heroIndex].currentCards >= all_HeroData[_heroIndex].requireCardsToUnlock[currentHeroLevel])
         {
             return true;
         }
@@ -48,7 +49,8 @@ public class HeroesManager : MonoBehaviour
 
     public bool hasEnoughCoinsToUpgrade(int _heroIndex)
     {
-        if(DataManager.instance.coins >= all_HeroData[_heroIndex].coinsForUpgrade)
+        int currentHeroLevel = all_HeroData[_heroIndex].currentLevel;
+        if (DataManager.instance.coins >= all_HeroData[_heroIndex].coinsForUpgrade[currentHeroLevel])
         {
             return true;
         }
@@ -69,8 +71,13 @@ public class HeroesManager : MonoBehaviour
     public void UpgradeSelectedHero(int _selectedHeroIndex)
     {
         print("Upgrade Herp");
-        all_HeroData[_selectedHeroIndex].currentCards -= all_HeroData[_selectedHeroIndex].requireCardsToUnlock;
-        DataManager.instance.coins -= all_HeroData[_selectedHeroIndex].coinsForUpgrade;
+        int currentHeroLevel = all_HeroData[_selectedHeroIndex].currentLevel;
+        all_HeroData[_selectedHeroIndex].currentCards -= all_HeroData[_selectedHeroIndex].requireCardsToUnlock[currentHeroLevel];
+
+        //Decrease Coins in data manager
+        DataManager.instance.DecreaseCoins(all_HeroData[_selectedHeroIndex].coinsForUpgrade[currentHeroLevel]);
+
+
         all_HeroData[_selectedHeroIndex].currentLevel++;
         all_HeroData[_selectedHeroIndex].flt_MaxHealth += SetHealthDataVisPer(_selectedHeroIndex);
         all_HeroData[_selectedHeroIndex].flt_Damage += SetHeroDamagePer(_selectedHeroIndex);

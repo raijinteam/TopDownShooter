@@ -20,8 +20,7 @@ public class AbilitesInventoryEquipAndUpgradeUI : MonoBehaviour
 
     [Header("Materials Property")]
     [SerializeField] private Image img_EquipmentMaterialIcon;
-    public TextMeshProUGUI txt_EquipmentcurrentMaterial;
-    public TextMeshProUGUI txt_EquipmentRequireMaterial;
+    public TextMeshProUGUI txt_EquipmentMaterial;
 
 
     public void SetHeadEquipAndUpgradePanel(int _itemIndex)
@@ -34,7 +33,7 @@ public class AbilitesInventoryEquipAndUpgradeUI : MonoBehaviour
         {
             print("Disable update");
             btn_Upgrade.gameObject.SetActive(false);
-            UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedAbilitiesItem();
+            //UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedAbilitiesItem();
         }
 
 
@@ -45,9 +44,12 @@ public class AbilitesInventoryEquipAndUpgradeUI : MonoBehaviour
         txt_EquipmentCurrentValue.text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex].currentFirerate.ToString();
         txt_EquipmentIncreaseValue.text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex].firerateIncrease.ToString();
 
-        txt_EquipmentcurrentMaterial.text = SlotAblitiesManager.instance.currentMaterialCount.ToString();
-        txt_EquipmentRequireMaterial.text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex]
-            .requireMaterialToLevelUp[SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex].currentLevel].ToString();
+
+        int currentMaterial = SlotAblitiesManager.instance.currentMaterialCount;
+        int requireMaterial = SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex]
+            .requireMaterialToLevelUp[SlotAblitiesManager.instance.all_AbilitesInventoryItems[_itemIndex].currentLevel];
+
+        txt_EquipmentMaterial.text = $"{currentMaterial} / {requireMaterial}";
 
 
 
@@ -58,7 +60,7 @@ public class AbilitesInventoryEquipAndUpgradeUI : MonoBehaviour
         PlayerSlotManager.instance.isAblitiesItemEquipped = true;
 
         SlotAblitiesManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.Assign_AbilitiesEquippedItem();
+        UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_AbilitiesEquippedItem();
 
         UiManager.instance.ui_PlayerManager.SetAbilitiesSlotState();
 
@@ -90,7 +92,7 @@ public class AbilitesInventoryEquipAndUpgradeUI : MonoBehaviour
 
         // slot head manager increase level
         SetHeadEquipAndUpgradePanel(currentItemSelectedIndex);
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetAbilitiesSlotLevelText().text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
+       // UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetAbilitiesSlotLevelText().text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
 
     }
 

@@ -8,6 +8,7 @@ public class SlotHeadEquipmentManager : MonoBehaviour
     public static SlotHeadEquipmentManager instance;
 
     public HeadInventoryProperty[] all_HeadInventory;
+    public int activeIndex;
     public int currentMaterialCount;
     public int currentEquippmentSelectedIndex;
 
@@ -16,6 +17,26 @@ public class SlotHeadEquipmentManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetHeadCurrentMat(value);
+        for (int i = 0; i < all_HeadInventory.Length; i++)
+        {
+            DataManager.instance.SetHeadEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetHeadMaterials();
+        for (int i = 0; i < all_HeadInventory.Length; i++)
+        {
+            all_HeadInventory[i].currentLevel = DataManager.instance.GetHeadCurrentLevel(i);
+        }
     }
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
@@ -55,5 +76,7 @@ public class SlotHeadEquipmentManager : MonoBehaviour
         DataManager.instance.coins -= all_HeadInventory[_itemIndex].requireCoinsToUpgrade;
         all_HeadInventory[_itemIndex].currentHealth += all_HeadInventory[_itemIndex].healthIncrease;
         all_HeadInventory[_itemIndex].currentLevel++;
+        DataManager.instance.SetHeadEQLevel(_itemIndex, all_HeadInventory[_itemIndex].currentLevel);
+        DataManager.instance.SetHeadCurrentMat(currentMaterialCount);
     }
 }

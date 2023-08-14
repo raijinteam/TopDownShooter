@@ -20,8 +20,7 @@ public class GunInventoryEquipAndUpgradeUI : MonoBehaviour
 
     [Header("Materials Property")]
     [SerializeField] private Image img_EquipmentMaterialIcon;
-    public TextMeshProUGUI txt_EquipmentcurrentMaterial;
-    public TextMeshProUGUI txt_EquipmentRequireMaterial;
+    public TextMeshProUGUI txt_EquipmentMaterial;
 
 
     public void SetHeadEquipAndUpgradePanel(int _itemIndex)
@@ -34,7 +33,7 @@ public class GunInventoryEquipAndUpgradeUI : MonoBehaviour
         {
             print("Disable update");
             btn_Upgrade.gameObject.SetActive(false);
-            UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedGunItem();
+        //    UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedGunItem();
         }
 
 
@@ -45,10 +44,12 @@ public class GunInventoryEquipAndUpgradeUI : MonoBehaviour
         txt_EquipmentCurrentValue.text = SlotGunsManager.instance.all_GunInventoryItems[_itemIndex].currentDamage.ToString();
         txt_EquipmentIncreaseValue.text = SlotGunsManager.instance.all_GunInventoryItems[_itemIndex].damageIncrease.ToString();
 
-        txt_EquipmentcurrentMaterial.text = SlotGunsManager.instance.currentMaterialCount.ToString();
-        txt_EquipmentRequireMaterial.text = SlotGunsManager.instance.all_GunInventoryItems[_itemIndex]
-            .requireMaterialToLevelUp[SlotGunsManager.instance.all_GunInventoryItems[_itemIndex].currentLevel].ToString();
 
+        int currentMaterial = SlotGunsManager.instance.currentMaterialCount;
+        int requireMaterial = SlotGunsManager.instance.all_GunInventoryItems[_itemIndex]
+            .requireMaterialToLevelUp[SlotGunsManager.instance.all_GunInventoryItems[_itemIndex].currentLevel];
+
+        txt_EquipmentMaterial.text = $"{currentMaterial} / {requireMaterial}";
 
 
     }
@@ -58,7 +59,7 @@ public class GunInventoryEquipAndUpgradeUI : MonoBehaviour
         PlayerSlotManager.instance.isGunItemEquipped = true;
 
         SlotGunsManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.Assign_GunEquippedItem();
+        UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_GunEquippedItem();
 
         UiManager.instance.ui_PlayerManager.SetGunSlotState();
 
@@ -87,7 +88,7 @@ public class GunInventoryEquipAndUpgradeUI : MonoBehaviour
 
         // slot head manager increase level
         SetHeadEquipAndUpgradePanel(currentItemSelectedIndex);
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetGunSlotLevelText().text = SlotGunsManager.instance.all_GunInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
+     //   UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetGunSlotLevelText().text = SlotGunsManager.instance.all_GunInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
 
     }
 

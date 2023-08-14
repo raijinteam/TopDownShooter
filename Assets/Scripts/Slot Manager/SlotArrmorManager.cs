@@ -10,6 +10,7 @@ public class SlotArrmorManager : MonoBehaviour
 
 
     public ArrmorEquipmentProperty[] all_ArrmorInventoryItems;
+    public int activeIndex;
     public int currentMaterialCount;
     public int currentEquippmentSelectedIndex;
 
@@ -18,6 +19,26 @@ public class SlotArrmorManager : MonoBehaviour
     {
         instance = this;
     }
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetArrmorCurrentMat(value);
+        for (int i = 0; i < all_ArrmorInventoryItems.Length; i++)
+        {
+            DataManager.instance.SetArrmorEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetArrmorMaterials();
+        for (int i = 0; i < all_ArrmorInventoryItems.Length; i++)
+        {
+            all_ArrmorInventoryItems[i].currentLevel = DataManager.instance.GetArrmorCurrentLevel(i);
+        }
+    }
+
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
     {

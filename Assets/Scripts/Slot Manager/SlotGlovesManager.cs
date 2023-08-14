@@ -9,6 +9,7 @@ public class SlotGlovesManager : MonoBehaviour
 
 
     public GlovesEquipmentProperty[] all_GlovesInventoryItems;
+    public int activeIndex;
     public int currentMaterialCount;
     public int currentEquippmentSelectedIndex;
 
@@ -17,6 +18,28 @@ public class SlotGlovesManager : MonoBehaviour
     {
         instance = this;
     }
+
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetGloveurrentMat(value);
+        for (int i = 0; i < all_GlovesInventoryItems.Length; i++)
+        {
+            DataManager.instance.SetGloveEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetGloveMaterials();
+        for (int i = 0; i < all_GlovesInventoryItems.Length; i++)
+        {
+            all_GlovesInventoryItems[i].currentLevel = DataManager.instance.GetGloveCurrentLevel(i);
+        }
+    }
+
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
     {

@@ -10,6 +10,7 @@ public class SlotGunsManager : MonoBehaviour
 
     public GunEquipmentProperty[] all_GunInventoryItems;
     public int currentMaterialCount;
+    public int activeIndex;
     public int currentEquippmentSelectedIndex;
 
     public int maxLevel;
@@ -17,6 +18,28 @@ public class SlotGunsManager : MonoBehaviour
     {
         instance = this;
     }
+
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetGunCurrentMat(value);
+        for (int i = 0; i < all_GunInventoryItems.Length; i++)
+        {
+            DataManager.instance.SetGunEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetGunMaterials();
+        for (int i = 0; i < all_GunInventoryItems.Length; i++)
+        {
+            all_GunInventoryItems[i].currentLevel = DataManager.instance.GetGunCurrentLevel(i);
+        }
+    }
+
+
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
     {
@@ -30,11 +53,7 @@ public class SlotGunsManager : MonoBehaviour
 
     public bool hasEnoughCoinsForUpgrade(int _slotIndex)
     {
-        //if (currentMaterialCount >= all_HeadInventory[_slotIndex].c[all_HeadInventory[_slotIndex].currentLevel])
-        //{
-        //    return true;
-        //}
-
+        
         if (DataManager.instance.coins >= all_GunInventoryItems[_slotIndex].requireCoinsToUpgrade)
         {
             return true;

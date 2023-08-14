@@ -20,8 +20,7 @@ public class GlovesInventoryEquipAndUpgradeUI : MonoBehaviour
 
     [Header("Materials Property")]
     [SerializeField] private Image img_EquipmentMaterialIcon;
-    public TextMeshProUGUI txt_EquipmentcurrentMaterial;
-    public TextMeshProUGUI txt_EquipmentRequireMaterial;
+    public TextMeshProUGUI txt_EquipmentMaterial;
 
 
     public void SetHeadEquipAndUpgradePanel(int _itemIndex)
@@ -34,7 +33,7 @@ public class GlovesInventoryEquipAndUpgradeUI : MonoBehaviour
         {
             print("Disable update");
             btn_Upgrade.gameObject.SetActive(false);
-            UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedGlovesItem();
+        //    UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedGlovesItem();
         }
 
 
@@ -45,9 +44,12 @@ public class GlovesInventoryEquipAndUpgradeUI : MonoBehaviour
         txt_EquipmentCurrentValue.text = SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex].currentDamage.ToString();
         txt_EquipmentIncreaseValue.text = SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex].damageIncrease.ToString();
 
-        txt_EquipmentcurrentMaterial.text = SlotGlovesManager.instance.currentMaterialCount.ToString();
-        txt_EquipmentRequireMaterial.text = SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex]
-            .requireMaterialToLevelUp[SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex].currentLevel].ToString();
+
+        int currentMaterial = SlotGlovesManager.instance.currentMaterialCount;
+        int requireMaterial = SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex]
+            .requireMaterialToLevelUp[SlotGlovesManager.instance.all_GlovesInventoryItems[_itemIndex].currentLevel];
+
+        txt_EquipmentMaterial.text = $"{currentMaterial} / {requireMaterial}";
 
 
 
@@ -57,7 +59,7 @@ public class GlovesInventoryEquipAndUpgradeUI : MonoBehaviour
     {
         PlayerSlotManager.instance.isGlovesItemEquipped = true;
         SlotGlovesManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.Assign_GlovesEquippedItem();
+        UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_GlovesEquippedItem();
 
 
         UiManager.instance.ui_PlayerManager.SetGlovesSlotState();
@@ -89,7 +91,7 @@ public class GlovesInventoryEquipAndUpgradeUI : MonoBehaviour
 
         // slot head manager increase level
         SetHeadEquipAndUpgradePanel(currentItemSelectedIndex);
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetGloveSlotLevelText().text = SlotGlovesManager.instance.all_GlovesInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
+       // UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetGloveSlotLevelText().text = SlotGlovesManager.instance.all_GlovesInventoryItems[currentItemSelectedIndex].currentLevel.ToString();
 
     }
 

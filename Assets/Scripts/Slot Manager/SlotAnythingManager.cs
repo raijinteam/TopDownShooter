@@ -9,6 +9,7 @@ public class SlotAnythingManager : MonoBehaviour
 
 
     public AnythingInventoryProperty[] all_AnythingInventoryItems;
+    public int activeIndex;
     public int currentMaterialCount;
     public int currentEquippmentSelectedIndex;
 
@@ -16,6 +17,26 @@ public class SlotAnythingManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetAnythingCurrentMat(value);
+        for (int i = 0; i < all_AnythingInventoryItems.Length; i++)
+        {
+            DataManager.instance.SetAnythingEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetAnythingMaterials();
+        for (int i = 0; i < all_AnythingInventoryItems.Length; i++)
+        {
+            all_AnythingInventoryItems[i].currentLevel = DataManager.instance.GetAnythingCurrentLevel(i);
+        }
     }
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)

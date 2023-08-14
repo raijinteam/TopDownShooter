@@ -66,13 +66,14 @@ public class HeroUpgradeUI : MonoBehaviour
             txt_CurrentHeroLevel.text = "Level " + HeroesManager.Instance.all_HeroData[_selectedIndex].currentLevel.ToString();
         }
 
+        int currentHeroLevel = HeroesManager.Instance.all_HeroData[_selectedIndex].currentLevel;
 
-        
+
         img_HeroImage.sprite = HeroesManager.Instance.all_HeroData[_selectedIndex].heroSprite;
         txt_HeroName.text = HeroesManager.Instance.all_HeroData[_selectedIndex].str_HeroName;
         txt_CurrentHeroCards.text = HeroesManager.Instance.all_HeroData[_selectedIndex].currentCards.ToString();
         txt_RequireCardsToUpgrade.text = HeroesManager.Instance.all_HeroData[_selectedIndex].requireCardsToUnlock.ToString();
-        slider_cards.maxValue = HeroesManager.Instance.all_HeroData[_selectedIndex].requireCardsToUnlock;
+        slider_cards.maxValue = HeroesManager.Instance.all_HeroData[_selectedIndex].requireCardsToUnlock[currentHeroLevel];
         slider_cards.value = HeroesManager.Instance.all_HeroData[_selectedIndex].currentCards;
         txt_DescriptionHeading.text = HeroesManager.Instance.all_HeroData[_selectedIndex].str_HeroDescription;
 

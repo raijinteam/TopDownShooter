@@ -6,13 +6,13 @@ public class UiManager : MonoBehaviour
 {
     public static UiManager instance;
 
-
+    public NavigationMenuAnimation ui_Navbar;
     public HomeUI ui_Home; // ui_Home
     public SettingUI ui_Setting; // ui_Settings
     public PassiveUpgradeUI ui_PassiveUpgrade;
     public RewardSummaryUI rewardSummaryUI; // ui_RewardSummary
-    public PlayerManagerUI ui_PlayerManager; 
-
+    public PlayerUI ui_PlayerManager;
+    public ExpeditionPanelUI[] ui_ExpeditionPanel;
 
     [SerializeField] private bool canChangeMenus;
 

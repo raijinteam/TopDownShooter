@@ -1,23 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TimeCalculation : MonoBehaviour
 {
     public static TimeCalculation instance;
 
-    [Header("Expedition One")]
+    public float activeGameTime;
+    public float[] expeditionTimer;
+    public float[] currentExpeditionTimer;
 
-    public float expeditionOneTimer = 30f;
-
-    public float currentExpeditionOneTimer;
-
-    [Header("Expedition Two")]
-    public float expeditionTwoTimer = 30f;
-
-    public float currentExpeditionTwoTimer;
-
-
+    private TimeSpan timeSpan;
 
     private void Awake()
     {
@@ -28,57 +22,94 @@ public class TimeCalculation : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
+    public void SetExpeditionOneTimer(int index )
     {
-        if (DataManager.instance.all_ExpeditionRunningStatus[0])
+        CalculateExpeditionScreenOffTime(index);
+        currentExpeditionTimer[index] = DataManager.instance.GetExpeditionTime(index);
+    }
+
+
+    private void Update()
+    {
+        activeGameTime += Time.deltaTime;
+
+
+        CalcuateExpeditionOneTime(0);
+        CalcuateExpeditionOneTime(1);
+    }
+
+
+    private void OnDestroy()
+    {
+        for(int i = 0; i < 2; i++)
         {
-            CalcuateExpeditionOneTime();
+            if(UiManager.instance.ui_Home.ui_Expedition[i].expeditionState == ExpeditionState.running)
+            {
+                float quitExpeditionTime = currentExpeditionTimer[i] - activeGameTime;
+                DataManager.instance.SetExpeditionTimer(i, quitExpeditionTime);
+            }
         }
 
-        if (DataManager.instance.all_ExpeditionRunningStatus[1])
+        DateTime gameQuitTime = DateTime.Now;
+        DataManager.instance.SetGameQuitTime(gameQuitTime.ToString());
+    }
+
+
+    public void CalculateScreenOffTime()
+    {
+        string gameQuitTimeString = DataManager.instance.GetGameQuitTime();
+
+
+        if (!gameQuitTimeString.Equals(""))
         {
-            CalcuateExpeditionTwoTime();
+            DateTime quitTime = DateTime.Parse(gameQuitTimeString);
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime > quitTime)
+            {
+                timeSpan = currentTime - quitTime;
+                Debug.Log("Total Quit Seconds : " + (float)timeSpan.TotalSeconds);
+            }
         }
     }
 
-    private void CalcuateExpeditionOneTime()
-    {
-        currentExpeditionOneTimer -= Time.deltaTime;
 
-        if(currentExpeditionOneTimer <= 0)
+    private void CalculateExpeditionScreenOffTime(int index)
+    {
+        CalculateScreenOffTime();
+
+        float dayTime = (int)DataManager.instance.GetExpeditionTime(index);
+
+        if(UiManager.instance.ui_Home.ui_Expedition[index].expeditionState == ExpeditionState.running)
         {
-            currentExpeditionOneTimer = expeditionOneTimer;
-            UiManager.instance.ui_Home.CompleteExpaditionOne();
-
+            currentExpeditionTimer[index] = dayTime - (float)timeSpan.TotalSeconds;
+            Debug.Log("Daily Challange Screen of time : " + currentExpeditionTimer[index]);
+            if(currentExpeditionTimer[index] <= 0)
+            {
+                DataManager.instance.SetExpeditionState(index, ExpeditionState.finished);
+                currentExpeditionTimer[index] = expeditionTimer[index];
+                DataManager.instance.SetExpeditionTimer(index, expeditionTimer[index]);
+            }
         }
-        UiManager.instance.ui_Home.ExpeditionOneTimer(currentExpeditionOneTimer);
-    }
-    public void ResetExpeditionOneTimer()
-    {
-        currentExpeditionOneTimer = expeditionOneTimer;
     }
 
-
-
-
-
-    private void CalcuateExpeditionTwoTime()
+    private void CalcuateExpeditionOneTime(int index)
     {
-        currentExpeditionTwoTimer -= Time.deltaTime;
-
-        if (currentExpeditionTwoTimer <= 0)
+        if(UiManager.instance.ui_Home.ui_Expedition[index].expeditionState == ExpeditionState.running)
         {
-            currentExpeditionTwoTimer = expeditionOneTimer;
-            UiManager.instance.ui_Home.CompleteExpeditionTwo();
+            currentExpeditionTimer[index] -= Time.deltaTime;
 
+            if (currentExpeditionTimer[index] <= 0)
+            {
+                DataManager.instance.SetExpeditionState(index, ExpeditionState.finished);
+                UiManager.instance.ui_Home.ui_Expedition[index].expeditionState = ExpeditionState.finished;
+                UiManager.instance.ui_Home.ui_Expedition[index].SetExpeditionPanels();
+                currentExpeditionTimer[index] = expeditionTimer[index];
+            }
         }
-        UiManager.instance.ui_Home.ExpeditionTwoTimer(currentExpeditionTwoTimer);
     }
-    
-    public void ResetExpeditionTwoTimer()
-    {
-        currentExpeditionTwoTimer = expeditionTwoTimer;
-    }
+
+
+
 
 }

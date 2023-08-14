@@ -60,16 +60,16 @@ public class HeroSelectionUI : MonoBehaviour
                 heroData[i].txt_CurrentCards.gameObject.SetActive(true);
                 heroData[i].txt_RequireCards.gameObject.SetActive(true);
                 heroData[i].slider_cards.gameObject.SetActive(true);
-               
 
 
+                int currentHeroLevel = HeroesManager.Instance.all_HeroData[i].currentLevel;
                 heroData[i].txt_currentHeroLevel.text = "Level " + HeroesManager.Instance.all_HeroData[i].currentLevel.ToString();
-                heroData[i].slider_cards.maxValue = HeroesManager.Instance.all_HeroData[i].requireCardsToUnlock;
+                heroData[i].slider_cards.maxValue = HeroesManager.Instance.all_HeroData[i].requireCardsToUnlock[currentHeroLevel];
                 heroData[i].slider_cards.value = HeroesManager.Instance.all_HeroData[i].currentCards;
                 heroData[i].txt_CurrentCards.text = HeroesManager.Instance.all_HeroData[i].currentCards.ToString();
                 heroData[i].txt_RequireCards.text = HeroesManager.Instance.all_HeroData[i].requireCardsToUnlock.ToString();
 
-                if (HeroesManager.Instance.all_HeroData[i].currentCards >= HeroesManager.Instance.all_HeroData[i].requireCardsToUnlock &&
+                if (HeroesManager.Instance.all_HeroData[i].currentCards >= HeroesManager.Instance.all_HeroData[i].requireCardsToUnlock[currentHeroLevel] &&
                     !HeroesManager.Instance.IsHeroReachMaxLevel(i))
                 {
                     heroData[i].img_upgrade.gameObject.SetActive(true);

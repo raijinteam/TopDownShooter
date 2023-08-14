@@ -13,8 +13,7 @@ public class HeadInventoryEquipAndUpgradeUI : MonoBehaviour
 
     public Image img_EquipmentIcon;
     public TextMeshProUGUI txt_EquipmentName;
-    public TextMeshProUGUI txt_EquipmentCurrentLevel;
-    public TextMeshProUGUI txt_EquipmentMaxLevel;
+    public TextMeshProUGUI txt_EquipmentLevel;
     public TextMeshProUGUI txt_EquipmentCurrentValue;
     public TextMeshProUGUI txt_EquipmentIncreaseValue;
     public Button btn_Upgrade;
@@ -22,8 +21,7 @@ public class HeadInventoryEquipAndUpgradeUI : MonoBehaviour
 
     [Header("Materials Property")]
     [SerializeField] private Image img_EquipmentMaterialIcon;
-    public TextMeshProUGUI txt_EquipmentcurrentMaterial;
-    public TextMeshProUGUI txt_EquipmentRequireMaterial;
+    public TextMeshProUGUI txt_EquipmentMaterial;
 
 
     public void SetHeadEquipAndUpgradePanel(int _itemIndex)
@@ -36,20 +34,25 @@ public class HeadInventoryEquipAndUpgradeUI : MonoBehaviour
         {
             print("Disable update");
             btn_Upgrade.gameObject.SetActive(false);
-            UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedHeadItem();
+          //  UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedHeadItem();
         }
 
 
         img_EquipmentIcon.sprite = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].sprite;
         txt_EquipmentName.text = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].name;
-        txt_EquipmentCurrentLevel.text = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].currentLevel.ToString();
-        txt_EquipmentMaxLevel.text = SlotHeadEquipmentManager.instance.maxLevel.ToString();
+
+        int currentLevel = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].currentLevel;
+        int maxLevel = SlotHeadEquipmentManager.instance.maxLevel;
+       // txt_EquipmentLevel.text = $"{currentLevel} / {maxLevel}";
+
         txt_EquipmentCurrentValue.text = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].currentHealth.ToString();
         txt_EquipmentIncreaseValue.text = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].healthIncrease.ToString();
 
-        txt_EquipmentcurrentMaterial.text = SlotHeadEquipmentManager.instance.currentMaterialCount.ToString();
-        txt_EquipmentRequireMaterial.text = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex]
-            .requireMaterialToLevelUp[SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].currentLevel].ToString();
+        int currentMaterial = SlotHeadEquipmentManager.instance.currentMaterialCount;
+        int requireMaterial = SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex]
+            .requireMaterialToLevelUp[SlotHeadEquipmentManager.instance.all_HeadInventory[_itemIndex].currentLevel];
+
+        txt_EquipmentMaterial.text = $"{currentMaterial} / {requireMaterial}";
 
 
 
@@ -58,11 +61,13 @@ public class HeadInventoryEquipAndUpgradeUI : MonoBehaviour
     public void OnClick_Equip()
     {
         PlayerSlotManager.instance.isHeadItemEquipped = true;
-
+        DataManager.instance.SetHeadEQState(PlayerSlotManager.instance.isHeadItemEquipped);
 
         SlotHeadEquipmentManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
 
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.Assign_HeadEquippedItem();
+        DataManager.instance.SetHeadActiveIndex(SlotHeadEquipmentManager.instance.currentEquippmentSelectedIndex);
+
+        UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_HeadEquippedItem();
         UiManager.instance.ui_PlayerManager.SetHeadState();
 
         
@@ -89,12 +94,12 @@ public class HeadInventoryEquipAndUpgradeUI : MonoBehaviour
 
 
         SlotHeadEquipmentManager.instance.UpgradeEquipnent(currentItemSelectedIndex);
-       
 
+        this.gameObject.SetActive(false);
 
         // slot head manager increase level
         SetHeadEquipAndUpgradePanel(currentItemSelectedIndex);
-        UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetHeadSlotLevelText().text = SlotHeadEquipmentManager.instance.all_HeadInventory[currentItemSelectedIndex].currentLevel.ToString();
+     //   UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.GetHeadSlotLevelText().text = SlotHeadEquipmentManager.instance.all_HeadInventory[currentItemSelectedIndex].currentLevel.ToString();
 
     }
 

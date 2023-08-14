@@ -2,18 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HeroType
+{
+    Common,
+    Rare,
+    Epic
+}
+
+public enum HeroState
+{
+    NoCards,
+    HasCards,
+    EnoughCardsForUpgrade
+}
+
 public class HeroData : MonoBehaviour
 {
     // profile
     public bool isLocked;
+    public HeroType heroType;
+
     public Sprite heroSprite;
     public string str_HeroName;
     [TextArea(2,6)]
     public string str_HeroDescription;
     public int currentLevel;
-    public int coinsForUpgrade;
+    public int[] coinsForUpgrade;
     public int currentCards;
-    public int requireCardsToUnlock;
+    public int[] requireCardsToUnlock;
 
 
     [Space]
@@ -27,7 +43,7 @@ public class HeroData : MonoBehaviour
 
     [Header("Update Hero State")]
 
-    //Upgrade States
+    //Upgrade States per
     public float flt_UpgradeMoveSpeed;
     public float flt_UpgradeHealth;
     public float flt_UpgradeDamage;

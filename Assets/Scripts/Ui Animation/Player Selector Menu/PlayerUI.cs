@@ -5,13 +5,13 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-public class PlayerManagerUI : MonoBehaviour
+public class PlayerUI : MonoBehaviour
 {
 
-    // Change the name of the script to : PlayerManagerUI
+    // Change the name of the script to : PlayerUI
 
     [Header("Sub Scripts")]
-    public EquipmentsSlotUI ui_EquipmentSlots;
+    public EquipmentsUI ui_Equipment;
     public HeadInventoryUI ui_InvetoryView;
     public HeroSelectionUI ui_HeroSelection;
 
@@ -30,10 +30,6 @@ public class PlayerManagerUI : MonoBehaviour
     private int anythigItemIndex = 0;
     private int abilitiesItemIndex = 0;
 
-    /// <summary>
-    // TEMPORARAYYY
-    [Header("Temporary")]
-    public GameObject panel_Upgrade;
 
 
     private void OnEnable()
@@ -44,7 +40,6 @@ public class PlayerManagerUI : MonoBehaviour
 
     private void Start()
     {
-        panel_Upgrade.SetActive(true);
 
         SetPlayerData(characterIndex);
     }
@@ -233,6 +228,7 @@ public class PlayerManagerUI : MonoBehaviour
             all_HerosModel[i].SetActive(false);
         }
         ui_HeroSelection.gameObject.SetActive(true);
+        UiManager.instance.ui_Navbar.gameObject.SetActive(false);
     }
 
     public void OnClick_OpenInventoryPanel()

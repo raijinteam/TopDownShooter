@@ -9,6 +9,7 @@ public class SlotAblitiesManager : MonoBehaviour
 
 
     public AbilitesInventoryProperty[] all_AbilitesInventoryItems;
+    public int activeIndex;
     public int currentMaterialCount;
     public int currentEquippmentSelectedIndex;
 
@@ -16,6 +17,27 @@ public class SlotAblitiesManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+
+    public void SetEqData(int value)
+    {
+        DataManager.instance.SetAblitiesCurrentMat(value);
+        for (int i = 0; i < all_AbilitesInventoryItems.Length; i++)
+        {
+            DataManager.instance.SetAbiitiesEQLevel(i, value);
+        }
+        GetEQData();
+    }
+
+
+    public void GetEQData()
+    {
+        currentMaterialCount = DataManager.instance.GetAblitiesMaterials();
+        for (int i = 0; i < all_AbilitesInventoryItems.Length; i++)
+        {
+            all_AbilitesInventoryItems[i].currentLevel = DataManager.instance.GetAblitiesCurrentLevel(i);
+        }
     }
 
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
