@@ -18,6 +18,14 @@ public class GlovesInventoryUI : MonoBehaviour
             if (!SlotGlovesManager.instance.all_GlovesInventoryItems[i].isLocked)
             {
                 EquipmentPrefabData obj = Instantiate(pf_InventoryButton, transform.position, Quaternion.identity, inventoryItemParent);
+
+
+                if (i == SlotGlovesManager.instance.currentEquippmentSelectedIndex)
+                    obj.img_SelectedBG.gameObject.SetActive(true);
+                else
+                    obj.img_SelectedBG.gameObject.SetActive(false);
+
+
                 obj.img_EquipmentIcon.sprite = SlotGlovesManager.instance.all_GlovesInventoryItems[i].sprite;
                 obj.txt_EquipmentCurrentLevel.text = SlotGlovesManager.instance.all_GlovesInventoryItems[i].currentLevel.ToString();
                 int index = i; // test this with only i
@@ -28,7 +36,6 @@ public class GlovesInventoryUI : MonoBehaviour
 
     public void OnClick_Object(int index)
     {
-        this.gameObject.SetActive(false);
         glovesInventoryEquipAndUpgradeUI.gameObject.SetActive(true);
         glovesInventoryEquipAndUpgradeUI.SetHeadEquipAndUpgradePanel(index);
     }

@@ -32,6 +32,23 @@ public class PassiveUpgradeSelectionUI : MonoBehaviour
         }
     }
 
+    public void SetAllPassiveUpgradeLevels()
+    {
+        for(int i = 0; i < all_PassiveSelectionBG.Length; i++)
+        {
+            DataManager.instance.SetPassiveUpgradeLevel(i, 1);
+        }
+        GetAllPassiveUpgradeLevels();
+    }
+
+    public void GetAllPassiveUpgradeLevels()
+    {
+        for (int i = 0; i < all_PassiveSelectionBG.Length; i++)
+        {
+            all_PassiveUpgradeLevel[i].text = DataManager.instance.GetPassiveUpgradeLevel(i).ToString();
+        }
+    }
+
 
     //RANDOM SELECTION EFFECT 
     private IEnumerator SetRandomPassiveUpgradeSelectionEffect()

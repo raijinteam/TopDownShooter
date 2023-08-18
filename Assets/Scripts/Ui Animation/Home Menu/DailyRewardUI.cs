@@ -6,28 +6,77 @@ using TMPro;
 
 public class DailyRewardUI : MonoBehaviour
 {
-    [Header ("Daily Reward Data")]
-    [SerializeField] private Button[] allDaysRewardButtons;
-    [SerializeField] private Sprite rewardClimedSprite;
 
-    private int index = 0;
+    [SerializeField] private DailyRewardSlotUI[] all_DailyRewards;
+    public bool isRewardClimed;
+    [SerializeField] private int index = 0;
+    [SerializeField] private TextMeshProUGUI txt_Timer;
+
+    [SerializeField] private int[] all_RewardAmount;
 
     private List<Sprite> sprites = new List<Sprite>();
     private List<string> strings = new List<string>();
 
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        for (int i = 0; i < allDaysRewardButtons.Length; i++)
+        SetDailyRewardData();
+
+        index = DataManager.instance.GetDailyRewardDayIndex();
+        isRewardClimed = DataManager.instance.GetDailyRewardActiveState();
+        for(int i = 0; i < index; i++)
         {
-            allDaysRewardButtons[i].interactable = false;
+            all_DailyRewards[i].panel_Climed.gameObject.SetActive(true);
+            all_DailyRewards[i].isClickable = false;
         }
-        allDaysRewardButtons[index].interactable = true;
-        
+
+        if (!isRewardClimed)
+        {
+            all_DailyRewards[index].panel_Active.gameObject.SetActive(true);
+        }
     }
 
+
+
+
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            isRewardClimed = false;
+            all_DailyRewards[index].panel_Active.gameObject.SetActive(true);
+            DataManager.instance.SetDailyRewardActiveState(DataManager.instance.isRewardClaim);
+        }
+
+        if (isRewardClimed)
+        {
+            int currentTime = (int)TimeCalculation.instance.currentDailyRewardTime;
+
+            int hours = currentTime / 3600;
+            int minutes = (currentTime % 3600) / 60;
+            int remainingSeconds = currentTime % 60;
+
+            txt_Timer.text = $"{hours} : { minutes} : { remainingSeconds}";
+        }
+        else
+        {
+            all_DailyRewards[index].isClickable = true;
+            all_DailyRewards[index].panel_Active.gameObject.SetActive(true);
+        }
+    }
+
+
+    public void SetDailyRewardData()
+    {
+        for(int i = 0; i < all_DailyRewards.Length; i++)
+        {
+            all_DailyRewards[i].txt_Header.text = "Day " + (i + 1);
+            all_DailyRewards[i].txt_RewardAmount.text = all_RewardAmount[i].ToString();
+        }
+    }
 
     public void ClearList()
     {
@@ -35,47 +84,53 @@ public class DailyRewardUI : MonoBehaviour
         strings.Clear();
     }
 
-    public void OnClick_ActiveNextRewardButton(int _buttonIndex)
+    private void ResetAllDays()
     {
-        if (_buttonIndex == index)
+        for (int i = 0; i < all_DailyRewards.Length; i++)
         {
-            allDaysRewardButtons[index].interactable = false;
-            allDaysRewardButtons[index].transform.GetChild(2).gameObject.SetActive(true);
-            if (index >= allDaysRewardButtons.Length)
-            {
-                index = -1;
-                print("index is big them length");
-            }
+            all_DailyRewards[i].panel_Climed.gameObject.SetActive(false);
+            all_DailyRewards[i].isClickable = false;
+        }
+        all_DailyRewards[index].isClickable = true;
+        all_DailyRewards[index].panel_Active.gameObject.SetActive(true);
+    }
 
-            if(index == 15)
-            {
-                int childCount = allDaysRewardButtons[index].transform.GetChild(0).transform.childCount;
-                print(childCount);
-               
-                for (int i =0; i < childCount; i++)
-                {
+    public void OnClick_DailyReward(int _buttonIndex)
+    {
+        if(_buttonIndex == index && index <= all_DailyRewards.Length && !isRewardClimed)
+        {
 
-                    sprites.Add(allDaysRewardButtons[index].transform.GetChild(0).transform.GetChild(i).GetComponent<Image>().sprite);
-                    print("sprites :" + sprites.Count);
-                    
-                    strings.Add(allDaysRewardButtons[index].transform.GetChild(1).transform.GetChild(i).GetComponent<TextMeshProUGUI>().text);
-                    print("Strings " + strings.Count);
-                }
-                UiManager.instance.rewardSummaryUI.SetMultiplRewardSummaryData(sprites, strings);
-                UiManager.instance.rewardSummaryUI.gameObject.SetActive(true);
+            all_DailyRewards[index].isClickable = false;
+            all_DailyRewards[index].panel_Climed.gameObject.SetActive(true);
+            all_DailyRewards[index].panel_Active.gameObject.SetActive(false);
+            isRewardClimed = true;
+            DataManager.instance.SetDailyRewardActiveState(isRewardClimed);
+            Debug.Log("Daily Reward Active State : " + DataManager.instance.GetDailyRewardActiveState());
+
+            //Give Reward
+            //Open RewardSummary Screem
+            UiManager.instance.ui_Reward.ui_RewardSummary.SetRewardSummaryData(all_DailyRewards[index].img_Icon.sprite , all_RewardAmount[index].ToString());
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
+
+            if (index >= all_DailyRewards.Length - 1)
+            {
+                Debug.Log("Rewach 7 day");
+                index = 0;
+                ResetAllDays();
             }
             else
             {
-                Image rewardIcon = allDaysRewardButtons[index].transform.GetChild(0).GetComponent<Image>();
-                string rewardAmount = allDaysRewardButtons[index].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text;
-                UiManager.instance.rewardSummaryUI.SetRewardSummaryData(rewardIcon.sprite, rewardAmount);
-                UiManager.instance.rewardSummaryUI.gameObject.SetActive(true);
-                rewardIcon.sprite = rewardClimedSprite;
                 index++;
-                allDaysRewardButtons[index].interactable = true;
-                print(index);
             }
+            DataManager.instance.SetDailyRewardDayIndex(index);
+            all_DailyRewards[index].isClickable = true;
         }
-
     }
+
+   
+    public void OnClick_Close()
+    {
+        gameObject.SetActive(false);
+    }
+   
 }

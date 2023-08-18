@@ -13,6 +13,7 @@ public class RewardSummaryUI : MonoBehaviour
     //IF THERE IS ONLY ONE REWARD CALL THAT FUNCTION
     public void SetRewardSummaryData(Sprite _rewardIcon , string _rewardAmount)
     {
+        this.gameObject.SetActive(true);
         allRewardIcons[0].gameObject.SetActive(true);
         allRewardIcons[0].transform.GetChild(0).GetComponent<Image>().sprite = _rewardIcon;
         allRewardIcons[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = _rewardAmount.ToString();
@@ -22,8 +23,11 @@ public class RewardSummaryUI : MonoBehaviour
     //IF THERE IS MULTIPLE REWARD CALL THAT FUNCTION
     public void SetMultiplRewardSummaryData(List<Sprite> allRewardSprite , List<string> allRewardAmount)
     {
+        this.gameObject.SetActive(true);
+        Debug.Log("List count : " + allRewardSprite.Count);
         for(int i =0; i < allRewardSprite.Count; i++)
         {
+            Debug.Log("Set Data in reward summary ui" + i);
             allRewardIcons[i].gameObject.SetActive(true);
 
             allRewardIcons[i].transform.GetChild(0).GetComponent<Image>().sprite = allRewardSprite[i];
@@ -36,11 +40,12 @@ public class RewardSummaryUI : MonoBehaviour
 
     public void OnClick_ClaimRewardButton()
     {
-        this.gameObject.SetActive(false);
         for (int i = 0; i < allRewardIcons.Length; i++)
         {
             allRewardIcons[i].gameObject.SetActive(false);
         }
+        this.gameObject.SetActive(false);
+        transform.parent.gameObject.SetActive(false);
     }
 
     #endregion

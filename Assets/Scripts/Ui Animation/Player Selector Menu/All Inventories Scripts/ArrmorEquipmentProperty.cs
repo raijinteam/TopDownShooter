@@ -9,8 +9,8 @@ public class ArrmorEquipmentProperty : MonoBehaviour
     public Sprite sprite;
     public bool isLocked = true;
 
-    public int requireCoinsToUpgrade;
-    public float currentHealth;
-    public float healthIncrease;
+    public int currentCards;
+    public int[] requireCoinsToUpgrade;
+    public float[] currentHealth;
     public int[] requireMaterialToLevelUp;
 }

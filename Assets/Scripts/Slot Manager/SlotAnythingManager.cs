@@ -19,6 +19,15 @@ public class SlotAnythingManager : MonoBehaviour
         instance = this;
     }
 
+
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Anythig");
+        DataManager.instance.SetAnythingCurrentMat(currentMaterialCount);
+    }
+
+
     public void SetEqData(int value)
     {
         DataManager.instance.SetAnythingCurrentMat(value);
@@ -56,7 +65,9 @@ public class SlotAnythingManager : MonoBehaviour
         //    return true;
         //}
 
-        if (DataManager.instance.coins >= all_AnythingInventoryItems[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_AnythingInventoryItems[_slotIndex].currentLevel;
+
+        if (DataManager.instance.coins >= all_AnythingInventoryItems[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -66,9 +77,10 @@ public class SlotAnythingManager : MonoBehaviour
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_AnythingInventoryItems[_itemIndex].currentLevel;
         currentMaterialCount -= all_AnythingInventoryItems[_itemIndex].requireMaterialToLevelUp[all_AnythingInventoryItems[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_AnythingInventoryItems[_itemIndex].requireCoinsToUpgrade;
-        all_AnythingInventoryItems[_itemIndex].currentFirerate += all_AnythingInventoryItems[_itemIndex].firerateIncrease;
+        DataManager.instance.DecreaseCoins(all_AnythingInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_AnythingInventoryItems[_itemIndex].currentLevel++;
+        DataManager.instance.SetAnythingEQLevel(_itemIndex, all_AnythingInventoryItems[_itemIndex].currentLevel);
     }
 }

@@ -12,11 +12,11 @@ public class AnythingInventoryEquipAndUpgradeUI : MonoBehaviour
 
     public Image img_EquipmentIcon;
     public TextMeshProUGUI txt_EquipmentName;
-    public TextMeshProUGUI txt_EquipmentCurrentLevel;
-    public TextMeshProUGUI txt_EquipmentMaxLevel;
+    public TextMeshProUGUI txt_EquipmentLevel;
     public TextMeshProUGUI txt_EquipmentCurrentValue;
     public TextMeshProUGUI txt_EquipmentIncreaseValue;
     public Button btn_Upgrade;
+    public TextMeshProUGUI txt_UpgradePrice;
 
 
     [Header("Materials Property")]
@@ -29,10 +29,16 @@ public class AnythingInventoryEquipAndUpgradeUI : MonoBehaviour
         currentItemSelectedIndex = _itemIndex;
 
         btn_Upgrade.gameObject.SetActive(true);
+
+
+        txt_EquipmentLevel.text ="Level " + SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentLevel.ToString();
+
+
         //when Reach Full level
         if (SlotAnythingManager.instance.all_AnythingInventoryItems[currentItemSelectedIndex].currentLevel == SlotGlovesManager.instance.maxLevel)
         {
             print("Disable update");
+            txt_EquipmentLevel.text = "Max Level";
             btn_Upgrade.gameObject.SetActive(false);
            // UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.CheckIfUpgradeAvailableForEquippedAnythingItem();
         }
@@ -40,15 +46,23 @@ public class AnythingInventoryEquipAndUpgradeUI : MonoBehaviour
 
         img_EquipmentIcon.sprite = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].sprite;
         txt_EquipmentName.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].name;
-        txt_EquipmentCurrentLevel.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentLevel.ToString();
-        txt_EquipmentMaxLevel.text = SlotAnythingManager.instance.maxLevel.ToString();
-        txt_EquipmentCurrentValue.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentFirerate.ToString();
-        txt_EquipmentIncreaseValue.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].firerateIncrease.ToString();
+
+
+        int currentLevel = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentLevel;
+
+        float upgradeValue = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentFirerate[currentLevel + 1] - SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentFirerate[currentLevel];
+
+
+        txt_EquipmentCurrentValue.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentFirerate[currentLevel].ToString();
+        txt_EquipmentIncreaseValue.text = upgradeValue.ToString("F0");
 
 
         int currentMaterials = SlotAnythingManager.instance.currentMaterialCount;
         int requireMaterial = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex]
             .requireMaterialToLevelUp[SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].currentLevel];
+
+
+        txt_UpgradePrice.text = SlotAnythingManager.instance.all_AnythingInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel].ToString();
 
         txt_EquipmentMaterial.text = $"{currentMaterials} / {requireMaterial}";
 
@@ -60,7 +74,12 @@ public class AnythingInventoryEquipAndUpgradeUI : MonoBehaviour
     {
         PlayerSlotManager.instance.isAnythingItemEquipped = true;
 
+        DataManager.instance.SetAnytimeEQState(PlayerSlotManager.instance.isAnythingItemEquipped);
+
         SlotAnythingManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
+
+        DataManager.instance.SetAnythingActiveIndex(currentItemSelectedIndex);
+
         UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_AnythingEquippedItem();
 
 

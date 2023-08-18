@@ -8,6 +8,7 @@ public class ExpeditionPanelUI : MonoBehaviour
     public int expeditionStateIndex;
 
     public ExpeditionItemUI[] all_ExpeditionItem;
+    public Expediton2ItemUI[] all_ExpeditionItems;
 
     public ExpeditionSelectionUI ui_ExpeditionSelection;
     public ExpeditionProcressUI ui_Expedition;
@@ -28,13 +29,26 @@ public class ExpeditionPanelUI : MonoBehaviour
         }
     }
 
+    public void OnClick_StateExpedition2(int index)
+    {
+        TimeCalculation.instance.expeditionTimer[panelIndex] = all_ExpeditionItems[index].time;
+        TimeCalculation.instance.currentExpeditionTimer[panelIndex] = all_ExpeditionItems[index].time;
+        DataManager.instance.SetExpeditionState(panelIndex, ExpeditionState.running);
+        UiManager.instance.ui_Home.ui_Expedition[panelIndex].expeditionState = (ExpeditionState)DataManager.instance.GetExpeditionState(panelIndex);
+        UiManager.instance.ui_Home.ui_Expedition[panelIndex].SetExpeditionPanels();
+        expeditionStateIndex = index;
+        this.gameObject.SetActive(false);
+    }
 
     public void OnClick_StartExpedition(int index)
     {
-        DataManager.instance.SetExpeditionState(panelIndex, ExpeditionState.running);
-        UiManager.instance.ui_Home.ui_Expedition[panelIndex].expeditionState =(ExpeditionState) DataManager.instance.GetExpeditionState(panelIndex);
-        UiManager.instance.ui_Home.ui_Expedition[panelIndex].SetExpeditionPanels();
         TimeCalculation.instance.expeditionTimer[panelIndex] = all_ExpeditionItem[index].time;
+        TimeCalculation.instance.currentExpeditionTimer[panelIndex] = all_ExpeditionItem[index].time;
+        DataManager.instance.SetExpeditionState(panelIndex, ExpeditionState.running);
+        UiManager.instance.ui_Home.ui_Expedition[panelIndex].expeditionState =(ExpeditionState)DataManager.instance.GetExpeditionState(panelIndex);
+        Debug.Log("Expedition State : " + DataManager.instance.GetExpeditionState(panelIndex));
+        UiManager.instance.ui_Home.ui_Expedition[panelIndex].SetExpeditionPanels();
+        Debug.Log("Set timer : " + all_ExpeditionItem[index].time);
         expeditionStateIndex = index;
         this.gameObject.SetActive(false);
     }

@@ -9,8 +9,8 @@ public class GlovesEquipmentProperty : MonoBehaviour
     public Sprite sprite;
     public bool isLocked = true;
 
-    public int requireCoinsToUpgrade;
-    public float currentDamage;
-    public float damageIncrease;
+    public int currentCards;
+    public int[] requireCoinsToUpgrade;
+    public float[] currentDamage;
     public int[] requireMaterialToLevelUp;
 }

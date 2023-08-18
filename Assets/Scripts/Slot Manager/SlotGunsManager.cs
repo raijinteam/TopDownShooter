@@ -30,6 +30,14 @@ public class SlotGunsManager : MonoBehaviour
         GetEQData();
     }
 
+
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Gun");
+        DataManager.instance.SetGunCurrentMat(currentMaterialCount);
+    }
+
     public void GetEQData()
     {
         currentMaterialCount = DataManager.instance.GetGunMaterials();
@@ -53,8 +61,8 @@ public class SlotGunsManager : MonoBehaviour
 
     public bool hasEnoughCoinsForUpgrade(int _slotIndex)
     {
-        
-        if (DataManager.instance.coins >= all_GunInventoryItems[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_GunInventoryItems[_slotIndex].currentLevel;
+        if (DataManager.instance.coins >= all_GunInventoryItems[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -62,19 +70,20 @@ public class SlotGunsManager : MonoBehaviour
         return false;
     }
 
-    public float SetDamagePer(int _slotIndex)
+   /* public float SetDamagePer(int _slotIndex)
     {
         float perDamage = all_GunInventoryItems[_slotIndex].currentDamage * (all_GunInventoryItems[_slotIndex].damageIncrease / 100f);
         return perDamage;
-    }
+    }*/
 
 
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_GunInventoryItems[_itemIndex].currentLevel;
         currentMaterialCount -= all_GunInventoryItems[_itemIndex].requireMaterialToLevelUp[all_GunInventoryItems[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_GunInventoryItems[_itemIndex].requireCoinsToUpgrade;
-        all_GunInventoryItems[_itemIndex].currentDamage += all_GunInventoryItems[_itemIndex].damageIncrease;
+        DataManager.instance.DecreaseCoins(all_GunInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_GunInventoryItems[_itemIndex].currentLevel++;
+        DataManager.instance.SetGunEQLevel(_itemIndex, all_GunInventoryItems[_itemIndex].currentLevel);
     }
 }

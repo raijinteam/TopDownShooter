@@ -8,14 +8,30 @@ public class ExpeditionProcressUI : MonoBehaviour
 {
     public int index;
     public int expeditionStartIndex;
+
     [SerializeField] private Image img_Icon;
-    [SerializeField] private TextMeshProUGUI txt_Reward;
-    [SerializeField] private TextMeshProUGUI txt_Timer;
     [SerializeField] private Slider slider_Timer;
+    [SerializeField] private TextMeshProUGUI txt_Timer;
+
+    [Header("Only Expedition One")]
+    [SerializeField] private TextMeshProUGUI txt_Reward;
+
+
+    [Header("Only Expedition Two")]
+    [SerializeField] private TextMeshProUGUI[] all_RewardText;
 
     private void OnEnable()
     {
-        
+        if(index == 0)
+        {
+            expeditionStartIndex = UiManager.instance.ui_ExpeditionPanel[index].expeditionStateIndex;
+            SetExpeditionOneData();
+        }
+        else
+        {
+            expeditionStartIndex = UiManager.instance.ui_ExpeditionPanel[index].expeditionStateIndex;
+            SetExpeditionTwoData();
+        }
     }
 
     private void Update()
@@ -37,7 +53,18 @@ public class ExpeditionProcressUI : MonoBehaviour
 
     }
 
+    private void SetExpeditionOneData()
+    {
+        txt_Reward.text =  UiManager.instance.ui_ExpeditionPanel[index].all_ExpeditionItem[expeditionStartIndex].reward.ToString();
+    }
 
+    private void SetExpeditionTwoData()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            all_RewardText[i].text = UiManager.instance.ui_ExpeditionPanel[index].all_ExpeditionItems[expeditionStartIndex].all_RewardAmounts[i].ToString();
+        }
+    }
 
 
     public void OnClick_SkipWithAd()

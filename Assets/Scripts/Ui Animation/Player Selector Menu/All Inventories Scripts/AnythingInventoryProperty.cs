@@ -9,8 +9,8 @@ public class AnythingInventoryProperty : MonoBehaviour
     public Sprite sprite;
     public bool isLocked = true;
 
-    public int requireCoinsToUpgrade;
-    public float currentFirerate;
-    public float firerateIncrease;
+    public int currentCards;
+    public int[] requireCoinsToUpgrade;
+    public float[] currentFirerate;
     public int[] requireMaterialToLevelUp;
 }

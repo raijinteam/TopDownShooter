@@ -23,7 +23,9 @@ public enum ExpeditionTwoState
 public class HomeUI : MonoBehaviour
 {
 
-    [SerializeField] private Camera homeCamera;
+    [Header("All Player Models")]
+    [SerializeField] private GameObject[] all_Players;
+
 
     [Header("Settings")]
     [SerializeField] private GameObject go_SettingPenal;
@@ -39,15 +41,37 @@ public class HomeUI : MonoBehaviour
 
     private void OnEnable()
     {
-        homeCamera.gameObject.SetActive(true);
+        SetActiveHeroModel();
     }
 
     private void OnDisable()
     {
-        homeCamera.gameObject.SetActive(false);
+
+        if(all_Players.Length > 0)
+        {
+            for (int i = 0; i < all_Players.Length; i++)
+            {
+                all_Players[i].SetActive(false);
+            }
+        }
     }
 
-   
+    public void SetActiveHeroModel()
+    {
+        int index = HeroesManager.Instance.currentActiveSelectedHeroIndex;
+        for(int i = 0; i < all_Players.Length; i++)
+        {
+            if(i == index)
+            {
+                all_Players[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                all_Players[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
 
     #region Game Start Button
 

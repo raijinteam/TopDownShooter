@@ -5,56 +5,80 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
-    [Header("Toggles Buttons")]
-    [SerializeField] private Toggle toggle_Sound;
-    [SerializeField] private Toggle toggle_Music;
-    [SerializeField] private Toggle toggle_HighGrapgics;
+    [SerializeField] private Image img_MusicTick;
+    [SerializeField] private Image img_SoundTick;
 
+
+    private bool isMusicOn;
+    private bool isSoundOn;
 
     private void OnEnable()
     {
-        toggle_Sound.isOn = DataManager.instance.isSoundTurnOn;
-        toggle_Music.isOn = DataManager.instance.isMusicTurnOn;
-        toggle_HighGrapgics.isOn = DataManager.instance.isHighGraphicsTurnOn;
+
+        isMusicOn = DataManager.instance.isMusicTurnOn;
+        isSoundOn = DataManager.instance.isSoundTurnOn;
+
+        CheckIfMusicIsOn();
+        CheckIfSoundIsOn();
     }
 
 
-    public void OnClick_SoundValueChange()
+    private void CheckIfMusicIsOn()
     {
-        if (toggle_Sound.isOn)
+        if (isMusicOn)
         {
-            DataManager.instance.isSoundTurnOn = true;
+            img_MusicTick.gameObject.SetActive(true);
         }
         else
         {
-            DataManager.instance.isSoundTurnOn = false;
+            img_MusicTick.gameObject.SetActive(false);
         }
     }
 
-    public void OnClick_MusicValueChange()
+    private void CheckIfSoundIsOn()
     {
-        if (toggle_Music.isOn)
+        if (isSoundOn)
+        {
+            img_SoundTick.gameObject.SetActive(true);
+        }
+        else
+        {
+            img_SoundTick.gameObject.SetActive(false);
+        }
+    }
+
+    public void OnClick_SoundValueChange()
+    {
+        if (!isSoundOn)
         {
             DataManager.instance.isMusicTurnOn = true;
+            isSoundOn = true;
         }
         else
         {
             DataManager.instance.isMusicTurnOn = false;
+            isSoundOn = false;
         }
+        CheckIfSoundIsOn();
     }
 
-
-    public void OnClick_HighGraphicsValueChange()
+    public void OnClick_MusicValueChange()
     {
-        if (toggle_HighGrapgics.isOn)
+        if (!isMusicOn)
         {
-            DataManager.instance.isHighGraphicsTurnOn = true;
+            DataManager.instance.isSoundTurnOn = true;
+            isMusicOn = true;
         }
         else
         {
-            DataManager.instance.isHighGraphicsTurnOn = false;
+            DataManager.instance.isSoundTurnOn = false;
+            isMusicOn = false;
         }
+        CheckIfMusicIsOn();
+        
     }
+
+
 
 
     public void OnClick_SettingScreenClose()

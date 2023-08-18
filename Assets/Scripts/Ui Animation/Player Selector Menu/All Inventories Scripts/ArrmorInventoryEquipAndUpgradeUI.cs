@@ -11,11 +11,11 @@ public class ArrmorInventoryEquipAndUpgradeUI : MonoBehaviour
 
     public Image img_EquipmentIcon;
     public TextMeshProUGUI txt_EquipmentName;
-    public TextMeshProUGUI txt_EquipmentCurrentLevel;
-    public TextMeshProUGUI txt_EquipmentMaxLevel;
+    public TextMeshProUGUI txt_EquipmentLevel;
     public TextMeshProUGUI txt_EquipmentCurrentValue;
     public TextMeshProUGUI txt_EquipmentIncreaseValue;
     public Button btn_Upgrade;
+    public TextMeshProUGUI txt_UpgradePrice;
 
 
     [Header("Materials Property")]
@@ -27,28 +27,40 @@ public class ArrmorInventoryEquipAndUpgradeUI : MonoBehaviour
     {
         currentItemSelectedIndex = _itemIndex;
 
+
+        txt_EquipmentLevel.text = "Level " + SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentLevel.ToString();
+
         btn_Upgrade.gameObject.SetActive(true);
         //when Reach Full level
         if (SlotArrmorManager.instance.all_ArrmorInventoryItems[currentItemSelectedIndex].currentLevel == SlotArrmorManager.instance.maxLevel)
         {
             print("Disable update");
+            txt_EquipmentLevel.text = "Max Level";
             btn_Upgrade.gameObject.SetActive(false);
             UiManager.instance.ui_PlayerManager.ui_Equipment.CheckIfUpgradeAvailableForEquippedArrmorItem();
         }
 
+        int currentLevel = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentLevel;
+
 
         img_EquipmentIcon.sprite = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].sprite;
         txt_EquipmentName.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].name;
-        txt_EquipmentCurrentLevel.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentLevel.ToString();
-        txt_EquipmentMaxLevel.text = SlotArrmorManager.instance.maxLevel.ToString();
-        txt_EquipmentCurrentValue.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentHealth.ToString();
-        txt_EquipmentIncreaseValue.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].healthIncrease.ToString();
+
+
+        float upgradeValue = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentHealth[currentLevel + 1] - SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentHealth[currentLevel];
+
+
+        txt_EquipmentCurrentValue.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentHealth[currentLevel].ToString();
+        txt_EquipmentIncreaseValue.text = upgradeValue.ToString("F0");
 
 
 
         int currentMaterial = SlotArrmorManager.instance.currentMaterialCount;
         int requireMaterial = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex]
             .requireMaterialToLevelUp[SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].currentLevel];
+
+        txt_UpgradePrice.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel].ToString();
+
 
         txt_EquipmentMaterial.text = $"{currentMaterial} / {requireMaterial}";
 
@@ -59,8 +71,13 @@ public class ArrmorInventoryEquipAndUpgradeUI : MonoBehaviour
     public void OnClick_Equip()
     {
         PlayerSlotManager.instance.isArrmorItemEquipped = true;
+        DataManager.instance.SetArrmorEQState(PlayerSlotManager.instance.isArrmorItemEquipped);
+
+
         SlotArrmorManager.instance.currentEquippmentSelectedIndex = currentItemSelectedIndex;
-       // UiManager.instance.ui_PlayerManager.ui_EquipmentSlots.Assign_ArrmorEquippedItem();
+        DataManager.instance.SetArrmorActiveIndex(currentItemSelectedIndex); ;
+       
+        UiManager.instance.ui_PlayerManager.ui_Equipment.Assign_ArrmorEquippedItem();
 
         UiManager.instance.ui_PlayerManager.SetArrmorSlotState();
 

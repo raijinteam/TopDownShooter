@@ -13,29 +13,68 @@ public class HeroesManager : MonoBehaviour
     public HeroData[] all_HeroData;
 
 
+    [Header("For Testing")]
+    public int increaseCardIndex = 0;
+
+
+
+
     private void Awake()
     {
         Instance = this;
     }
 
-
-    public float SetHealthDataVisPer(int _heroIndex)
+    private void Update()
     {
-        float perHealth = all_HeroData[_heroIndex].flt_MaxHealth * (all_HeroData[_heroIndex].flt_UpgradeHealth / 100f);
-        return perHealth;
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log("Increase Player Cards in Hero Manager");
+            IncreasePlayerCards(increaseCardIndex, 1);
+        }
     }
 
-    public float SetHeroDamagePer(int _heroIndex)
+
+    public void SetHeroDataWhenFirstLoad()
     {
-        float perDamage = all_HeroData[_heroIndex].flt_Damage * (all_HeroData[_heroIndex].flt_UpgradeDamage / 100f);
-        return perDamage;
+        for (int i = 0; i < all_HeroData.Length; i++)
+        {
+            DataManager.instance.SetHeroLevel(i, 1);
+            DataManager.instance.SetHeroCards(i, 0);
+            if(i == 0)
+            {
+                DataManager.instance.SetHeroLockState(i, false);
+            }
+            else
+            {
+                DataManager.instance.SetHeroLockState(i, true);
+
+            }
+        }
+
+        GetHeroData();
     }
 
-    public float SetHeroFireratePer(int _heroIndex)
+
+    public void GetHeroData()
     {
-        float perDamage = all_HeroData[_heroIndex].flt_FireRate * (all_HeroData[_heroIndex].flt_UpgradeFirerate / 100f);
-        return perDamage;
+        for(int i = 0; i < all_HeroData.Length; i++)
+        {
+            all_HeroData[i].currentLevel = DataManager.instance.GetHeroLevel(i);
+            all_HeroData[i].currentCards = DataManager.instance.GetHeroCards(i);
+            all_HeroData[i].isLocked = DataManager.instance.GetHeroLockState(i);
+        }
     }
+
+
+
+
+    private void IncreasePlayerCards(int index , int amouubt)
+    {
+        all_HeroData[index].currentCards += amouubt;
+        DataManager.instance.SetHeroCards(index, all_HeroData[index].currentCards);
+        UiManager.instance.ui_PlayerManager.ui_HeroSelection.IncreaseCards(index);
+    }
+   
 
     public bool hasEnoughCardsToUpgrade(int _heroIndex)
     {
@@ -68,21 +107,46 @@ public class HeroesManager : MonoBehaviour
         return false;
     }
 
-    public void UpgradeSelectedHero(int _selectedHeroIndex)
+
+
+    #region Get Selected Player Updated States
+
+    public float GetHeroUpgradeHealth(int index)
     {
-        print("Upgrade Herp");
-        int currentHeroLevel = all_HeroData[_selectedHeroIndex].currentLevel;
-        all_HeroData[_selectedHeroIndex].currentCards -= all_HeroData[_selectedHeroIndex].requireCardsToUnlock[currentHeroLevel];
+        float health = all_HeroData[index].flt_MaxHealth[all_HeroData[index].currentLevel + 1] - all_HeroData[index].flt_MaxHealth[all_HeroData[index].currentLevel];
 
-        //Decrease Coins in data manager
-        DataManager.instance.DecreaseCoins(all_HeroData[_selectedHeroIndex].coinsForUpgrade[currentHeroLevel]);
-
-
-        all_HeroData[_selectedHeroIndex].currentLevel++;
-        all_HeroData[_selectedHeroIndex].flt_MaxHealth += SetHealthDataVisPer(_selectedHeroIndex);
-        all_HeroData[_selectedHeroIndex].flt_Damage += SetHeroDamagePer(_selectedHeroIndex);
-        all_HeroData[_selectedHeroIndex].flt_FireRate += SetHeroFireratePer(_selectedHeroIndex);
+        return health;
     }
+    public float GetHeroUpgradeDamage(int index)
+    {
+        float value = all_HeroData[index].flt_Damage[all_HeroData[index].currentLevel + 1] - all_HeroData[index].flt_Damage[all_HeroData[index].currentLevel];
+
+        return value;
+    }
+
+    public float GetHeroUpgradeArrmor(int index)
+    {
+        float value = all_HeroData[index].flt_Arrmor[all_HeroData[index].currentLevel + 1] - all_HeroData[index].flt_Arrmor[all_HeroData[index].currentLevel];
+
+        return value;
+    }
+
+    public float GetHeroUpgradeFirerate(int index)
+    {
+        float value = all_HeroData[index].flt_FireRate[all_HeroData[index].currentLevel + 1] - all_HeroData[index].flt_FireRate[all_HeroData[index].currentLevel];
+
+        return value;
+    }
+
+    public float GetHeroUpgradeForce(int index)
+    {
+        float value = all_HeroData[index].flt_Force[all_HeroData[index].currentLevel + 1] - all_HeroData[index].flt_Force[all_HeroData[index].currentLevel];
+
+        return value;
+    }
+
+
+    #endregion
 
 
     // GETTER FOR PROFILE
@@ -104,48 +168,5 @@ public class HeroesManager : MonoBehaviour
 
     //GETTER FOR STATES
 
-    public float GetHeroHealth(int _heroIndex)
-    {
-        return all_HeroData[_heroIndex].flt_MaxHealth;
-    }
-
-    public void SetHeroHealth(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_MaxHealth += _value;
-    }
-
-    public void DeceraceHeroHealth(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_MaxHealth -= _value;
-    }
-
-    public float GetHeroDamage(int _heroIndex)
-    {
-        return all_HeroData[_heroIndex].flt_Damage;
-    }
-
-    public void DeceraceHeroDamage(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_Damage -= _value;
-    }
-
-    public void SetHeroDamage(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_Damage += _value;
-    }
-
-    public void DeceraceHeroFirerate(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_FireRate -= _value;
-    }
-
-    public float GetHeroFirerate(int _heroIndex)
-    {
-        return all_HeroData[_heroIndex].flt_FireRate;
-    }
-
-    public void SetHeroFirerate(int _heroIndex, float _value)
-    {
-        all_HeroData[_heroIndex].flt_FireRate += _value;
-    }
+  
 }

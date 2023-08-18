@@ -20,6 +20,13 @@ public class SlotAblitiesManager : MonoBehaviour
     }
 
 
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Ablities");
+        DataManager.instance.SetAblitiesCurrentMat(currentMaterialCount);
+    }
+
     public void SetEqData(int value)
     {
         DataManager.instance.SetAblitiesCurrentMat(value);
@@ -52,12 +59,9 @@ public class SlotAblitiesManager : MonoBehaviour
 
     public bool hasEnoughCoinsForUpgrade(int _slotIndex)
     {
-        //if (currentMaterialCount >= all_HeadInventory[_slotIndex].c[all_HeadInventory[_slotIndex].currentLevel])
-        //{
-        //    return true;
-        //}
 
-        if (DataManager.instance.coins >= all_AbilitesInventoryItems[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_AbilitesInventoryItems[_slotIndex].currentLevel;
+        if (DataManager.instance.coins >= all_AbilitesInventoryItems[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -68,9 +72,10 @@ public class SlotAblitiesManager : MonoBehaviour
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_AbilitesInventoryItems[_itemIndex].currentLevel;
         currentMaterialCount -= all_AbilitesInventoryItems[_itemIndex].requireMaterialToLevelUp[all_AbilitesInventoryItems[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_AbilitesInventoryItems[_itemIndex].requireCoinsToUpgrade;
-        all_AbilitesInventoryItems[_itemIndex].currentFirerate += all_AbilitesInventoryItems[_itemIndex].firerateIncrease;
+        DataManager.instance.DecreaseCoins(all_AbilitesInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_AbilitesInventoryItems[_itemIndex].currentLevel++;
+        DataManager.instance.SetAbiitiesEQLevel(_itemIndex, all_AbilitesInventoryItems[_itemIndex].currentLevel);
     }
 }

@@ -20,6 +20,13 @@ public class SlotGlovesManager : MonoBehaviour
     }
 
 
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Gloves");
+        DataManager.instance.SetGloveurrentMat(currentMaterialCount);
+    }
+
     public void SetEqData(int value)
     {
         DataManager.instance.SetGloveurrentMat(value);
@@ -58,7 +65,9 @@ public class SlotGlovesManager : MonoBehaviour
         //    return true;
         //}
 
-        if (DataManager.instance.coins >= all_GlovesInventoryItems[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_GlovesInventoryItems[_slotIndex].currentLevel;
+
+        if (DataManager.instance.coins >= all_GlovesInventoryItems[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -69,9 +78,10 @@ public class SlotGlovesManager : MonoBehaviour
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_GlovesInventoryItems[_itemIndex].currentLevel;
         currentMaterialCount -= all_GlovesInventoryItems[_itemIndex].requireMaterialToLevelUp[all_GlovesInventoryItems[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_GlovesInventoryItems[_itemIndex].requireCoinsToUpgrade;
-        all_GlovesInventoryItems[_itemIndex].currentDamage += all_GlovesInventoryItems[_itemIndex].damageIncrease;
+        DataManager.instance.DecreaseCoins(all_GlovesInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_GlovesInventoryItems[_itemIndex].currentLevel++;
+        DataManager.instance.SetGloveEQLevel(_itemIndex , all_GlovesInventoryItems[_itemIndex].currentLevel);
     }
 }

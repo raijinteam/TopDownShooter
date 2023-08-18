@@ -39,11 +39,11 @@ public class NavigationMenuAnimation : MonoBehaviour
 
                     all_MenusBG[i].DOAnchorMin(new Vector2(startingPosition, all_MenusBG[i].anchorMin.y), animationDuration);
                     startingPosition += xPositionOffset;
-                    all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, 0.9f), animationDuration);
-					all_MenuNameTexts[i].DOAnchorMax(new Vector2(all_MenuNameTexts[i].anchorMax.x, 0.4f), animationDuration);
-					all_MenuIcons[i].DOAnchorMin(new Vector2(all_MenuIcons[i].anchorMin.x, 0.9f), animationDuration);
-					all_MenuIcons[i].DOAnchorMax(new Vector2(all_MenuIcons[i].anchorMax.x, 1.0f), animationDuration);
-					//all_MenuIcons[i].transform.DOScale(new Vector3(1.3f, 1.3f, 1.3f), animationDuration);
+                    all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, 1.2f), animationDuration);
+					all_MenuNameTexts[i].DOAnchorPos(new Vector2(all_MenuNameTexts[i].anchoredPosition.x, 80), animationDuration);
+					all_MenuIcons[i].DOAnchorMin(new Vector2(all_MenuIcons[i].anchorMin.x, 0.6f), animationDuration);
+					all_MenuIcons[i].DOAnchorMax(new Vector2(all_MenuIcons[i].anchorMax.x, 0.9f), animationDuration);
+					all_MenuIcons[i].transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), animationDuration);
 					all_MenuPanel[i].SetActive(true);
 
                 }
@@ -52,43 +52,17 @@ public class NavigationMenuAnimation : MonoBehaviour
                 {
                     all_MenusBG[i].DOAnchorMin(new Vector2(startingPosition, all_MenusBG[i].anchorMin.y), animationDuration);
                     startingPosition += xPositionOffset - 0.0375f;
-                    all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, .7f), animationDuration);
-					all_MenuNameTexts[i].DOAnchorMax(new Vector2(all_MenuNameTexts[i].anchorMax.x, 0.1f), animationDuration);
+                    all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, .9f), animationDuration);
+                    all_MenuNameTexts[i].DOAnchorPos(new Vector2(all_MenuNameTexts[i].anchoredPosition.x, -315f), animationDuration);
+                    all_MenuNameTexts[i].DOAnchorMax(new Vector2(all_MenuNameTexts[i].anchorMax.x, 0.1f), animationDuration);
 					all_MenuIcons[i].DOAnchorMin(new Vector2(all_MenuIcons[i].anchorMin.x, 0.5f), animationDuration);
 					all_MenuIcons[i].DOAnchorMax(new Vector2(all_MenuIcons[i].anchorMax.x, 0.5f), animationDuration);
-					//all_MenuIcons[i].transform.DOScale(new Vector3(1f, 1f, 1f), animationDuration);
+					all_MenuIcons[i].transform.DOScale(new Vector3(1f, 1f, 1f), animationDuration);
 					all_MenuPanel[i].SetActive(false);
                 }
             }
 
-            //for (int i = 0; i < all_MenusBG.Length; i++)
-            //{
-            //    //I IS EQULS TO IDEX INCREASE SIZE OF BUTTON AND SET ACTIVE THAT BUTTON
-            //    if (i == index)
-            //    {
-            //        all_MenusBG[i].DOAnchorMin(new Vector2(startingPosition, all_MenusBG[i].anchorMin.y), animationDuration);
-            //        startingPosition += 0.28f;
-            //        all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, 1f), animationDuration);
-            //        all_MenuNameTexts[i].DOAnchorMax(new Vector2(all_MenuNameTexts[i].anchorMax.x, 0.4f), animationDuration);
-            //        all_MenuIcons[i].DOAnchorMin(new Vector2(all_MenuIcons[i].anchorMin.x, 0.9f), animationDuration);
-            //        all_MenuIcons[i].DOAnchorMax(new Vector2(all_MenuIcons[i].anchorMax.x, 1.0f), animationDuration);
-            //        all_MenuIcons[i].transform.DOScale(new Vector3(1.3f, 1.3f, 1.3f), animationDuration);
-            //        all_MenuPanel[i].SetActive(true);
-
-            //    }
-            //    //DECEREASE SIZE OF ALL OTHER BUTTONS
-            //    else
-            //    {
-            //        all_MenusBG[i].DOAnchorMin(new Vector2(startingPosition, all_MenusBG[i].anchorMin.y), animationDuration);
-            //        startingPosition += 0.18f;
-            //        all_MenusBG[i].DOAnchorMax(new Vector2(startingPosition, .9f), animationDuration);
-            //        all_MenuNameTexts[i].DOAnchorMax(new Vector2(all_MenuNameTexts[i].anchorMax.x, 0.1f), animationDuration);
-            //        all_MenuIcons[i].DOAnchorMin(new Vector2(all_MenuIcons[i].anchorMin.x, 0.5f), animationDuration);
-            //        all_MenuIcons[i].DOAnchorMax(new Vector2(all_MenuIcons[i].anchorMax.x, 0.5f), animationDuration);
-            //        all_MenuIcons[i].transform.DOScale(new Vector3(1f, 1f, 1f), animationDuration);
-            //        all_MenuPanel[i].SetActive(false);
-            //    }
-            //}
+            
         }
 
     }

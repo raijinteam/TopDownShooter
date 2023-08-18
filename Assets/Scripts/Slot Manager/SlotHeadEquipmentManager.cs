@@ -39,6 +39,14 @@ public class SlotHeadEquipmentManager : MonoBehaviour
         }
     }
 
+
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Head");
+        DataManager.instance.SetHeadCurrentMat(currentMaterialCount);
+    }
+
     public bool hasEnoughMaterialsForUpgrade(int _slotIndex)
     {
         if(currentMaterialCount >= all_HeadInventory[_slotIndex].requireMaterialToLevelUp[all_HeadInventory[_slotIndex].currentLevel]){
@@ -54,8 +62,8 @@ public class SlotHeadEquipmentManager : MonoBehaviour
         //{
         //    return true;
         //}
-
-        if(DataManager.instance.coins >= all_HeadInventory[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_HeadInventory[_slotIndex].currentLevel;
+        if (DataManager.instance.coins >= all_HeadInventory[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -64,17 +72,17 @@ public class SlotHeadEquipmentManager : MonoBehaviour
     }
 
 
-    public float SetHealthPer(int _slotIndex)
+   /* public float SetHealthPer(int _slotIndex)
     {
-        float perHealth = all_HeadInventory[_slotIndex].currentHealth * (all_HeadInventory[_slotIndex].healthIncrease / 100f);
-        return perHealth;
-    }
+       // float perHealth = all_HeadInventory[_slotIndex].currentHealth * (all_HeadInventory[_slotIndex].healthIncrease / 100f);
+        //return perHealth;
+    }*/
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_HeadInventory[_itemIndex].currentLevel;
         currentMaterialCount -= all_HeadInventory[_itemIndex].requireMaterialToLevelUp[all_HeadInventory[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_HeadInventory[_itemIndex].requireCoinsToUpgrade;
-        all_HeadInventory[_itemIndex].currentHealth += all_HeadInventory[_itemIndex].healthIncrease;
+        DataManager.instance.DecreaseCoins(all_HeadInventory[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_HeadInventory[_itemIndex].currentLevel++;
         DataManager.instance.SetHeadEQLevel(_itemIndex, all_HeadInventory[_itemIndex].currentLevel);
         DataManager.instance.SetHeadCurrentMat(currentMaterialCount);

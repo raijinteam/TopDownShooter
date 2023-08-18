@@ -10,29 +10,4 @@ public class PassiveUpgradeUI : MonoBehaviour
     [Header("Required Scripts")]
     public PassiveRewardInfoUI ui_PassiveRewardInfo;
     public PassiveUpgradeSelectionUI ui_PassiveUpgradeSelection;
-
-
-    
-
-
-
-    private void OnEnable()
-    {
-       
-    }
-
-
-    
-
-   
-   
-
-   
-
-    
-
-
-
-
-
 }

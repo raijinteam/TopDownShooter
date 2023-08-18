@@ -8,4 +8,5 @@ public class EquipmentPrefabData : MonoBehaviour
 {
     public Image img_EquipmentIcon;
     public TextMeshProUGUI txt_EquipmentCurrentLevel;
+    public Image img_SelectedBG;
 }

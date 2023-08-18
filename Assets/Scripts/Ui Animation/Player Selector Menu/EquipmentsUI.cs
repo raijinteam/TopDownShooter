@@ -138,11 +138,9 @@ public class EquipmentsUI : MonoBehaviour
         slot_Empty.gameObject.SetActive(false);
         slot_Fill.gameObject.SetActive(true);
         img_HeadIcon.sprite = SlotHeadEquipmentManager.instance.all_HeadInventory[SlotHeadEquipmentManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_CurrentLevel.text = SlotHeadEquipmentManager.instance.all_HeadInventory[SlotHeadEquipmentManager.instance.currentEquippmentSelectedIndex]
+        txt_CurrentLevel.text = "LV. " + SlotHeadEquipmentManager.instance.all_HeadInventory[SlotHeadEquipmentManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
 
-        ////SET SLOT LEVEL DATA WHEN LEVEL IS GETHER THEN 1
-        //SlotHeadEquipmentManager.instance.SetLevelData();
 
         // Check For Updgrade
         CheckIfUpgradeAvailableForEquippedHeadItem();
@@ -188,12 +186,12 @@ public class EquipmentsUI : MonoBehaviour
 
     public void Assign_GunEquippedItem()
     {
+        slot_GunEmpty.gameObject.SetActive(false);
+        slot_GunFill.gameObject.SetActive(true);
         img_GunIcon.sprite = SlotGunsManager.instance.all_GunInventoryItems[SlotGunsManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_GunCurrentLevel.text = SlotGunsManager.instance.all_GunInventoryItems[SlotGunsManager.instance.currentEquippmentSelectedIndex]
+        txt_GunCurrentLevel.text = "LV. " + SlotGunsManager.instance.all_GunInventoryItems[SlotGunsManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
 
-        ////SET SLOT LEVEL DATA WHEN LEVEL IS GETHER THEN 1
-        //SlotHeadEquipmentManager.instance.SetLevelData();
 
         // Check For Updgrade
         CheckIfUpgradeAvailableForEquippedGunItem();
@@ -231,6 +229,7 @@ public class EquipmentsUI : MonoBehaviour
                 break;
             }
         }
+
     }
 
     #endregion
@@ -241,8 +240,10 @@ public class EquipmentsUI : MonoBehaviour
 
     public void Assign_ArrmorEquippedItem()
     {
+        slot_ArrmorFill.gameObject.SetActive(true);
+        slot_ArrmorEmpty.gameObject.SetActive(false);
         img_ArrmorIcon.sprite = SlotArrmorManager.instance.all_ArrmorInventoryItems[SlotArrmorManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_ArrmorCurrentLevel.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[SlotArrmorManager.instance.currentEquippmentSelectedIndex]
+        txt_ArrmorCurrentLevel.text = "LV. " + SlotArrmorManager.instance.all_ArrmorInventoryItems[SlotArrmorManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
 
         // Check For Updgrade
@@ -294,8 +295,10 @@ public class EquipmentsUI : MonoBehaviour
 
     public void Assign_GlovesEquippedItem()
     {
+        slot_GloveEmpty.gameObject.SetActive(false);
+        slot_GloveFill.gameObject.SetActive(true);
         img_GlveIcon.sprite = SlotGlovesManager.instance.all_GlovesInventoryItems[SlotGlovesManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_GloveCurrentLevel.text = SlotGlovesManager.instance.all_GlovesInventoryItems[SlotGlovesManager.instance.currentEquippmentSelectedIndex]
+        txt_GloveCurrentLevel.text = "LV. " + SlotGlovesManager.instance.all_GlovesInventoryItems[SlotGlovesManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
         txt_GloveCurrentLevel.gameObject.SetActive(true);
 
@@ -348,8 +351,10 @@ public class EquipmentsUI : MonoBehaviour
 
     public void Assign_AnythingEquippedItem()
     {
+        slot_AnythingEmpty.gameObject.SetActive(false);
+        slot_AnythingFill.gameObject.SetActive(true);
         img_AnythingIcon.sprite = SlotAnythingManager.instance.all_AnythingInventoryItems[SlotAnythingManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_AnythingCurrentLevel.text = SlotAnythingManager.instance.all_AnythingInventoryItems[SlotAnythingManager.instance.currentEquippmentSelectedIndex]
+        txt_AnythingCurrentLevel.text = "LV. " + SlotAnythingManager.instance.all_AnythingInventoryItems[SlotAnythingManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
         txt_AnythingCurrentLevel.gameObject.SetActive(true);
 
@@ -400,8 +405,11 @@ public class EquipmentsUI : MonoBehaviour
 
     public void Assign_AbilitiesEquippedItem()
     {
+        slot_AblitiesEmpty.gameObject.SetActive(false);
+        slot_AblitiesFill.gameObject.SetActive(true);
+
         img_AblitiesIcon.sprite = SlotAblitiesManager.instance.all_AbilitesInventoryItems[SlotAblitiesManager.instance.currentEquippmentSelectedIndex].sprite;
-        txt_AblitiesCurrentLevel.text = SlotAblitiesManager.instance.all_AbilitesInventoryItems[SlotAblitiesManager.instance.currentEquippmentSelectedIndex]
+        txt_AblitiesCurrentLevel.text = "LV. " + SlotAblitiesManager.instance.all_AbilitesInventoryItems[SlotAblitiesManager.instance.currentEquippmentSelectedIndex]
             .currentLevel.ToString();
         txt_AblitiesCurrentLevel.gameObject.SetActive(true);
 

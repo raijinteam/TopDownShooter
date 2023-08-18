@@ -18,6 +18,12 @@ public class ArrmorInventoryUI : MonoBehaviour
             if (!SlotArrmorManager.instance.all_ArrmorInventoryItems[i].isLocked)
             {
                 EquipmentPrefabData obj = Instantiate(pf_InventoryButton, transform.position, Quaternion.identity, inventoryItemParent);
+
+                if (i == SlotArrmorManager.instance.currentEquippmentSelectedIndex)
+                    obj.img_SelectedBG.gameObject.SetActive(true);
+                else
+                    obj.img_SelectedBG.gameObject.SetActive(false);
+
                 obj.img_EquipmentIcon.sprite = SlotArrmorManager.instance.all_ArrmorInventoryItems[i].sprite;
                 obj.txt_EquipmentCurrentLevel.text = SlotArrmorManager.instance.all_ArrmorInventoryItems[i].currentLevel.ToString();
                 int index = i; // test this with only i
@@ -28,8 +34,6 @@ public class ArrmorInventoryUI : MonoBehaviour
 
     public void OnClick_Object(int index)
     {
-        print(index);
-        this.gameObject.SetActive(false);
         arrmorInventoryEquipAndUpgradeUI.gameObject.SetActive(true);
         arrmorInventoryEquipAndUpgradeUI.SetHeadEquipAndUpgradePanel(index);
     }

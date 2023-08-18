@@ -10,9 +10,14 @@ public class UiManager : MonoBehaviour
     public HomeUI ui_Home; // ui_Home
     public SettingUI ui_Setting; // ui_Settings
     public PassiveUpgradeUI ui_PassiveUpgrade;
-    public RewardSummaryUI rewardSummaryUI; // ui_RewardSummary
     public PlayerUI ui_PlayerManager;
     public ExpeditionPanelUI[] ui_ExpeditionPanel;
+    public CommonPanelUI ui_CommonPanel;
+    public RewardUI ui_Reward;
+    public DailyRewardUI ui_DailyReward;
+    public DailyMissionUI ui_DailyMission;
+    public EnergyPurchaseUI ui_EnergyPurchase;
+    public ShopPanelUI ui_Shop;
 
     [SerializeField] private bool canChangeMenus;
 

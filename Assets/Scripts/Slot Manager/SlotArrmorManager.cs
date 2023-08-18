@@ -20,6 +20,15 @@ public class SlotArrmorManager : MonoBehaviour
         instance = this;
     }
 
+
+    public void IncreaseMaterial(int amount)
+    {
+        currentMaterialCount += amount;
+        Debug.Log("Increase In Arrmor");
+        DataManager.instance.SetArrmorCurrentMat(currentMaterialCount);
+    }
+
+
     public void SetEqData(int value)
     {
         DataManager.instance.SetArrmorCurrentMat(value);
@@ -57,7 +66,9 @@ public class SlotArrmorManager : MonoBehaviour
         //    return true;
         //}
 
-        if (DataManager.instance.coins >= all_ArrmorInventoryItems[_slotIndex].requireCoinsToUpgrade)
+        int currentLevel = all_ArrmorInventoryItems[_slotIndex].currentLevel;
+
+        if (DataManager.instance.coins >= all_ArrmorInventoryItems[_slotIndex].requireCoinsToUpgrade[currentLevel])
         {
             return true;
         }
@@ -68,10 +79,11 @@ public class SlotArrmorManager : MonoBehaviour
 
     public void UpgradeEquipnent(int _itemIndex)
     {
+        int currentLevel = all_ArrmorInventoryItems[_itemIndex].currentLevel;
         currentMaterialCount -= all_ArrmorInventoryItems[_itemIndex].requireMaterialToLevelUp[all_ArrmorInventoryItems[_itemIndex].currentLevel];
-        DataManager.instance.coins -= all_ArrmorInventoryItems[_itemIndex].requireCoinsToUpgrade;
-        all_ArrmorInventoryItems[_itemIndex].currentHealth += all_ArrmorInventoryItems[_itemIndex].healthIncrease;
+        DataManager.instance.DecreaseCoins(all_ArrmorInventoryItems[_itemIndex].requireCoinsToUpgrade[currentLevel]);
         all_ArrmorInventoryItems[_itemIndex].currentLevel++;
+        DataManager.instance.SetArrmorEQLevel(_itemIndex, all_ArrmorInventoryItems[_itemIndex].currentLevel);
     }
 
 }

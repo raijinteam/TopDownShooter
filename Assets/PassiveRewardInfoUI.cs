@@ -48,7 +48,9 @@ public class PassiveRewardInfoUI : MonoBehaviour
     {
         PassiveUpgradeManager.Instance.IncreasePassiveUpgradeCurrentLevel(_rewardedPassiveIndex);
         img_PassiveUpgradeLevelIcon.GetComponentInChildren<TextMeshProUGUI>().text = PassiveUpgradeManager.Instance.GetCurrentPassivesLevel(_rewardedPassiveIndex).ToString();
-        text_PassiveUpgradeLevel.text = "Level " + PassiveUpgradeManager.Instance.GetCurrentPassivesLevel(_rewardedPassiveIndex).ToString();
+        int level = PassiveUpgradeManager.Instance.GetCurrentPassivesLevel(_rewardedPassiveIndex);
+        text_PassiveUpgradeLevel.text = "Level " + level;
+        DataManager.instance.SetPassiveUpgradeLevel(_rewardedPassiveIndex, level);
         text_PassiveUpgradeName.text = PassiveUpgradeManager.Instance.GetCurrentPassiveUpgradeName(_rewardedPassiveIndex);
         text_PassiveUpgradeDesc.text = PassiveUpgradeManager.Instance.GetCurrentPassiveUpgradeDesc(_rewardedPassiveIndex);
     }

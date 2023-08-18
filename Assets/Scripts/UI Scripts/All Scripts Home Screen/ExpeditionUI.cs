@@ -22,17 +22,21 @@ public class ExpeditionUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txt_Timer;
 
 
-    private void OnEnable()
-    {
-        
-    }
-
-
     private void Update()
     {
-        ExpeditionTimer((int)TimeCalculation.instance.currentExpeditionTimer[index]);
+
+        if(expeditionState == ExpeditionState.running)
+        {
+            ExpeditionTimer((int)TimeCalculation.instance.currentExpeditionTimer[index]);
+        }
+
     }
 
+    public void SetExpeditionState()
+    {
+        expeditionState = (ExpeditionState)DataManager.instance.GetExpeditionState(index);
+        SetExpeditionPanels();
+    }
 
     public void ExpeditionTimer(int _timeLeft)
     {

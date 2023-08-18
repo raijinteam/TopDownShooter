@@ -24,6 +24,10 @@ public class HeroData : MonoBehaviour
 
     public Sprite heroSprite;
     public string str_HeroName;
+
+    public string ultimatePowerupName;
+    public UltimatePowerupData[] ultimatePowerupData;
+
     [TextArea(2,6)]
     public string str_HeroDescription;
     public int currentLevel;
@@ -32,20 +36,15 @@ public class HeroData : MonoBehaviour
     public int[] requireCardsToUnlock;
 
 
+
     [Space]
 
     [Header("Hero State")]
     // Stats
-    public float flt_MoveSpeed;
-    public float flt_MaxHealth;
-    public float flt_Damage;
-    public float flt_FireRate;
+    public float[] flt_MaxHealth;
+    public float[] flt_Arrmor;
+    public float[] flt_Damage;
+    public float[] flt_FireRate;
+    public float[] flt_Force;
 
-    [Header("Update Hero State")]
-
-    //Upgrade States per
-    public float flt_UpgradeMoveSpeed;
-    public float flt_UpgradeHealth;
-    public float flt_UpgradeDamage;
-    public float flt_UpgradeFirerate;
 }
