@@ -38,11 +38,11 @@ public class HeroSelectionUI : MonoBehaviour
         SetAllHeroDataInScrollView();
         //Set Active hero data
         SetCurrentlyActiveHeroData();
-       
+
     }
     private void OnDisable()
     {
-        for(int i =0; i < all_Heros.Length; i++)
+        for (int i = 0; i < all_Heros.Length; i++)
         {
             all_Heros[i].SetActive(false);
         }
@@ -73,7 +73,7 @@ public class HeroSelectionUI : MonoBehaviour
 
         SetPlayerDataWhenSelect(HeroesManager.Instance.currentActiveSelectedHeroIndex);
 
-        for(int i =0; i < heroData.Length; i++)
+        for (int i = 0; i < heroData.Length; i++)
         {
 
             SetPlayerBG(i);
@@ -117,7 +117,7 @@ public class HeroSelectionUI : MonoBehaviour
             }
 
 
-           
+
         }
     }
 
@@ -132,13 +132,15 @@ public class HeroSelectionUI : MonoBehaviour
 
     private void SetPlayerBG(int index)
     {
-        if(HeroesManager.Instance.all_HeroData[index].heroType == HeroType.Common)
+        if (HeroesManager.Instance.all_HeroData[index].heroType == HeroType.Common)
         {
             heroData[index].SetPlayerBGForItsType(sprite_BGCommon, color_GlowCommon);
-        }else if(HeroesManager.Instance.all_HeroData[index].heroType == HeroType.Rare)
+        }
+        else if (HeroesManager.Instance.all_HeroData[index].heroType == HeroType.Rare)
         {
             heroData[index].SetPlayerBGForItsType(sprite_BGRare, color_GlowRare);
-        }else
+        }
+        else
         {
             heroData[index].SetPlayerBGForItsType(sprite_BGEpic, color_GlowEpic);
         }
@@ -186,19 +188,36 @@ public class HeroSelectionUI : MonoBehaviour
 
     public void OnClick_SetSelectePlayerData(int _selectionIndex)
     {
-        all_Heros[currentluActiveHero].SetActive(false);
-        heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(false);
+        if(DataManager.instance.isTutorialPlaying && _selectionIndex == 0)
+        {
+            all_Heros[currentluActiveHero].SetActive(false);
+            heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(false);
 
-        currentluActiveHero = _selectionIndex;
-        all_Heros[currentluActiveHero].SetActive(true);
-        heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(true);
+            currentluActiveHero = _selectionIndex;
+            all_Heros[currentluActiveHero].SetActive(true);
+            heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(true);
 
-        SetPlayerDataWhenSelect(_selectionIndex);
+            SetPlayerDataWhenSelect(_selectionIndex);
+        }else if (!DataManager.instance.isTutorialPlaying)
+        {
+            all_Heros[currentluActiveHero].SetActive(false);
+            heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(false);
+
+            currentluActiveHero = _selectionIndex;
+            all_Heros[currentluActiveHero].SetActive(true);
+            heroData[currentluActiveHero].img_SelectedBG.gameObject.SetActive(true);
+
+            SetPlayerDataWhenSelect(_selectionIndex);
+        }
+
         
     }
 
     public void OnClick_SelectHero()
     {
+        if (DataManager.instance.isTutorialPlaying)
+            return;
+
         HeroesManager.Instance.currentActiveSelectedHeroIndex = currentluActiveHero;
         DataManager.instance.SetActiveHeroIndex(currentluActiveHero);
         UiManager.instance.ui_PlayerManager.SetActiveHero();
@@ -211,16 +230,26 @@ public class HeroSelectionUI : MonoBehaviour
 
     public void OnClick_OpenSelectedPlayerInfo()
     {
-        ui_HeroUpgrade.gameObject.SetActive(true);
-        ui_HeroUpgrade.SetHeroUpgradeData(currentluActiveHero);
+        if (!DataManager.instance.isTutorialPlaying || currentluActiveHero == 0)
+        {
+            if (DataManager.instance.isTutorialPlaying)
+            {
+                UiManager.instance.ui_tutorial.tutorialState = TutorialState.UpgradePlayer;
+            }
+            ui_HeroUpgrade.gameObject.SetActive(true);
+            ui_HeroUpgrade.SetHeroUpgradeData(currentluActiveHero);
+        }
     }
 
     public void OnClick_ClosePanel()
     {
-        UiManager.instance.ui_PlayerManager.SetActiveHero();
-        UiManager.instance.ui_Navbar.gameObject.SetActive(true);
-        this.gameObject.SetActive(false);
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            UiManager.instance.ui_PlayerManager.SetActiveHero();
+            UiManager.instance.ui_Navbar.gameObject.SetActive(true);
+            this.gameObject.SetActive(false);
+        }
     }
 
-    
+
 }

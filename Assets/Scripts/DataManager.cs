@@ -10,8 +10,9 @@ public class DataManager : MonoBehaviour
 
 
 
- 
-    [Header ("Player Data")]
+
+    [Header("Player Data")]
+    public bool isTutorialPlaying;
     public int userLevel;
     public float userCurrentXP;
     public int activePlayerIndex;
@@ -72,6 +73,12 @@ public class DataManager : MonoBehaviour
 
     private void SetFirstTimeLoadData()
     {
+
+        //Set Tutorial State
+        SetTutorialState(true);
+        isTutorialPlaying = GetTutorialState();
+
+
         //Set Player coins
         SetPlayerCoins(coins);
         SetPlayerGems(gems);
@@ -81,6 +88,10 @@ public class DataManager : MonoBehaviour
         SetUserLevel(1);
         SetUserXP(0);
         SetUserRequireXP((int)userRequireXP);
+
+        //Set Passive Upgrade Coin amount for upgrade
+        SetPassiveUpgradeCoinAmount(100);
+
 
         UiManager.instance.ui_CommonPanel.SetCommonPanelData();
 
@@ -141,6 +152,9 @@ public class DataManager : MonoBehaviour
         userLevel = GetUserLevel();
         userCurrentXP = GetUserCurrentXP();
         userRequireXP = GetUserRequireXP();
+
+        isTutorialPlaying = GetTutorialState();
+
 
         UiManager.instance.ui_CommonPanel.SetCommonPanelData();
 
@@ -303,6 +317,14 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public bool HasAnySkipitUpForGetReward()
+    {
+        if (skipits > 0)
+            return true;
+        else
+            return false;
+    }
+
 
     public void IncreaseCoins(int amount)
     {
@@ -357,6 +379,22 @@ public class DataManager : MonoBehaviour
 
 
     #region Set All Data
+
+
+
+    public void SetTutorialState(bool value)
+    {
+        if(value == false)
+        {
+            PlayerPrefs.SetInt(PlayerPrefsKey.KEY_TUTORIAL_STATE, 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(PlayerPrefsKey.KEY_TUTORIAL_STATE, 1);
+        }
+    }
+
+
 
     #region All player EQ Data
 
@@ -606,6 +644,11 @@ public class DataManager : MonoBehaviour
     #endregion
 
 
+    public void SetPassiveUpgradeCoinAmount(int amount)
+    {
+        PlayerPrefs.SetInt(PlayerPrefsKey.KEY_PASSIVE_UPGRADE_AMOUNT, amount);
+    }
+
     public void SetPassiveUpgradeLevel(int index , int level)
     {
         PlayerPrefs.SetInt(PlayerPrefsKey.KEY_PASSIVE_UPGRADE_LEVEL + index, level);
@@ -639,6 +682,17 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public void SetDailyMissionRewardCollectedState(int index, bool _state)
+    {
+        if (_state == false)
+        {
+            PlayerPrefs.SetInt(PlayerPrefsKey.KEY_DAILYMISSION_REWARD_COLLECTED + index, 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(PlayerPrefsKey.KEY_DAILYMISSION_REWARD_COLLECTED + index, 1);
+        }
+    }
     public void SetDailyMissionTime(float time)
     {
         PlayerPrefs.SetFloat(PlayerPrefsKey.KEY_DAILY_MISSION_TIME, time);
@@ -938,6 +992,27 @@ public class DataManager : MonoBehaviour
 
     #endregion
 
+
+
+
+    public bool GetTutorialState()
+    {
+        if (PlayerPrefs.GetInt(PlayerPrefsKey.KEY_TUTORIAL_STATE) == 0)
+            return false;
+        else
+            return true;
+    }
+
+
+    public int GetPassiveUpgradeCoinAmount()
+    {
+        return PlayerPrefs.GetInt(PlayerPrefsKey.KEY_PASSIVE_UPGRADE_AMOUNT);
+    }
+
+
+
+
+
     public int GetPassiveUpgradeLevel(int index)
     {
         return PlayerPrefs.GetInt(PlayerPrefsKey.KEY_PASSIVE_UPGRADE_LEVEL + index);
@@ -967,6 +1042,15 @@ public class DataManager : MonoBehaviour
         else
             return true;
     }
+
+    public bool GetDailyMissionRewardCollectedState(int index)
+    {
+        if (PlayerPrefs.GetInt(PlayerPrefsKey.KEY_DAILYMISSION_REWARD_COLLECTED + index) == 0)
+            return false;
+        else
+            return true;
+    }
+
 
     public float GetDailyMissionTime()
     {

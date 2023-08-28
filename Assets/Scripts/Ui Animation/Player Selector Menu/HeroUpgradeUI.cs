@@ -183,7 +183,7 @@ public class HeroUpgradeUI : MonoBehaviour
 
     public void OnClick_UpgradeHero()
     {
-        
+
         if (!HeroesManager.Instance.hasEnoughCardsToUpgrade(currentHeroIndex))
         {
             print("Not Enough Cards to upgrade");
@@ -230,15 +230,26 @@ public class HeroUpgradeUI : MonoBehaviour
         {
             all_UltimatePowerupDetails[i].gameObject.SetActive(false);
         }
+
+        if (DataManager.instance.isTutorialPlaying)
+        {
+            UiManager.instance.ui_tutorial.tutorialState = TutorialState.TutorialComplete;
+            UiManager.instance.ui_Navbar.OnClick_MenuActivate(2);
+        }
+
         this.gameObject.SetActive(false);
     }
 
     public void OnClick_ClosePanel()
     {
-        for(int i= 0; i < all_UltimatePowerupDetails.Length; i++)
+
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            all_UltimatePowerupDetails[i].gameObject.SetActive(false);
-        }
-        this.gameObject.SetActive(false);
+            for (int i = 0; i < all_UltimatePowerupDetails.Length; i++)
+            {
+                all_UltimatePowerupDetails[i].gameObject.SetActive(false);
+            }
+            this.gameObject.SetActive(false);
+        }   
     }
 }

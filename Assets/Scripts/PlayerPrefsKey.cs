@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PlayerPrefsKey : MonoBehaviour
 {
+
+    //tutorial
+    public static string KEY_TUTORIAL_STATE = "TutorialState";
+
     //User 
     public static string KEY_COINS = "Coins";
     public static string KEY_GEMS = "Gems";
@@ -40,25 +44,25 @@ public class PlayerPrefsKey : MonoBehaviour
     public static string KEY_GUNEQ_LEVEL = "GunEQLevel";
     public static string KEY_GUNEQ_CURRENT_MAT = "GunCurrentMat";
 
-    //Head items
+    //Arrmor items
     public static string KEY_ARRMOREQ_STATE = "ArrmorEQState";
     public static string KEY_ARRMOR_SELECTED_INDEX = "ArrmorSelectedIndex";
     public static string KEY_ARRMOREQ_LEVEL = "ArrmorEQLevel";
     public static string KEY_ARRMOREQ_CURRENT_MAT = "ArrmorCurrentMat";
 
-    //Head items
+    //Glove items
     public static string KEY_GLOVEEQ_STATE = "GloveEQState";
     public static string KEY_GLOVE_SELECTED_INDEX = "GloveSelectedIndex";
     public static string KEY_GLOVESEQ_LEVEL = "GloveEQLevel";
     public static string KEY_GLOVESEQ_CURRENT_MAT = "GlovesCurrentMat";
 
-    //Head items
+    //Anything items
     public static string KEY_ANYTHINGEQ_STATE = "AnythingEQState";
     public static string KEY_ANYTHING_SELECTED_INDEX = "AnythingSelectedIndex";
     public static string KEY_ANYTHINGEQ_LEVEL = "AnythingEQLevel";
     public static string KEY_ANYTHINGEQ_CURRENT_MAT = "AnythingCurrentMat";
 
-    //Head items
+    //Ablities items
     public static string KEY_ABLITIESEQ_STATE = "AblitiesEQState";
     public static string KEY_ABLITIES_SELECTED_INDEX = "AblitiesSelectedIndex";
     public static string KEY_ABLITIESEQ_LEVEL = "AblitiesEQLevel";
@@ -68,6 +72,7 @@ public class PlayerPrefsKey : MonoBehaviour
 
     //Passive Upgrade
     public static string KEY_PASSIVE_UPGRADE_LEVEL = "PassiveUpgradeLevel";
+    public static string KEY_PASSIVE_UPGRADE_AMOUNT = "PassiveUpgradeAmount";
 
 
 

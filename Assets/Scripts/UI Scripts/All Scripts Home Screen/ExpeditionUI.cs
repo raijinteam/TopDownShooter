@@ -25,7 +25,7 @@ public class ExpeditionUI : MonoBehaviour
     private void Update()
     {
 
-        if(expeditionState == ExpeditionState.running)
+        if (expeditionState == ExpeditionState.running)
         {
             ExpeditionTimer((int)TimeCalculation.instance.currentExpeditionTimer[index]);
         }
@@ -74,17 +74,35 @@ public class ExpeditionUI : MonoBehaviour
 
     public void OnClick_StartExpedition()
     {
-        UiManager.instance.ui_ExpeditionPanel[index].gameObject.SetActive(true);
-        UiManager.instance.ui_ExpeditionPanel[index].panelIndex = index;
+
+        if(DataManager.instance.isTutorialPlaying && index == 0)
+        {
+            UiManager.instance.ui_tutorial.tutorialState = TutorialState.ExpeditionSelect;
+            UiManager.instance.ui_ExpeditionPanel[index].gameObject.SetActive(true);
+            UiManager.instance.ui_ExpeditionPanel[index].panelIndex = index;
+        }
+        else if (!DataManager.instance.isTutorialPlaying)
+        {
+            UiManager.instance.ui_ExpeditionPanel[index].gameObject.SetActive(true);
+            UiManager.instance.ui_ExpeditionPanel[index].panelIndex = index;
+        }
+
     }
 
     public void OnClick_ExpeditionRunning()
     {
+       
+
         UiManager.instance.ui_ExpeditionPanel[index].gameObject.SetActive(true);
     }
 
     public void OnClick_FinishedExpedition()
     {
+        if (DataManager.instance.isTutorialPlaying)
+        {
+            UiManager.instance.ui_tutorial.tutorialState = TutorialState.OpenPlayerSelect;
+        }
+
         expeditionState = ExpeditionState.start;
         SetExpeditionPanels();
         DataManager.instance.SetExpeditionState(index, expeditionState);

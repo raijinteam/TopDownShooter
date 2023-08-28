@@ -12,17 +12,22 @@ public class ExpeditionProcressUI : MonoBehaviour
     [SerializeField] private Image img_Icon;
     [SerializeField] private Slider slider_Timer;
     [SerializeField] private TextMeshProUGUI txt_Timer;
+    [SerializeField] private Image img_SkipTimeIcon;
 
     [Header("Only Expedition One")]
     [SerializeField] private TextMeshProUGUI txt_Reward;
+    [SerializeField] private float gemsAmountForUnlockRewards;
+    [SerializeField] private float decreaseTimeForWatchVideo;
 
 
     [Header("Only Expedition Two")]
     [SerializeField] private TextMeshProUGUI[] all_RewardText;
 
+    [SerializeField] private bool hasSkipit;
+
     private void OnEnable()
     {
-        if(index == 0)
+        if (index == 0)
         {
             expeditionStartIndex = UiManager.instance.ui_ExpeditionPanel[index].expeditionStateIndex;
             SetExpeditionOneData();
@@ -32,6 +37,10 @@ public class ExpeditionProcressUI : MonoBehaviour
             expeditionStartIndex = UiManager.instance.ui_ExpeditionPanel[index].expeditionStateIndex;
             SetExpeditionTwoData();
         }
+
+        hasSkipit = DataManager.instance.HasAnySkipitUpForGetReward();
+
+        GameManager.instance.SetSkipitOrAdsAicon(img_SkipTimeIcon);
     }
 
     private void Update()
@@ -53,14 +62,21 @@ public class ExpeditionProcressUI : MonoBehaviour
 
     }
 
+    //this is based on time if time is 1 hour then 10 gems and time is 2 hour then 20 gems
+    private int CalculateGemsForUnlockItem()
+    {
+        return 0;
+    }
+
+
     private void SetExpeditionOneData()
     {
-        txt_Reward.text =  UiManager.instance.ui_ExpeditionPanel[index].all_ExpeditionItem[expeditionStartIndex].reward.ToString();
+        txt_Reward.text = UiManager.instance.ui_ExpeditionPanel[index].all_ExpeditionItem[expeditionStartIndex].reward.ToString();
     }
 
     private void SetExpeditionTwoData()
     {
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             all_RewardText[i].text = UiManager.instance.ui_ExpeditionPanel[index].all_ExpeditionItems[expeditionStartIndex].all_RewardAmounts[i].ToString();
         }
@@ -70,10 +86,52 @@ public class ExpeditionProcressUI : MonoBehaviour
     public void OnClick_SkipWithAd()
     {
 
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            if (hasSkipit)
+            {
+                DataManager.instance.decreaseSkipIts(1);
+            }
+            else
+            {
+                //Show Video
+            }
+
+            TimeCalculation.instance.currentExpeditionTimer[index] -= decreaseTimeForWatchVideo;
+            this.gameObject.SetActive(false);
+        }
+
     }
 
     public void OnClick_SkipWithGems()
     {
+        if (DataManager.instance.isTutorialPlaying)
+        {
+            TimeCalculation.instance.currentExpeditionTimer[index] = 0;
+            UiManager.instance.ui_tutorial.tutorialState = TutorialState.ExpeditionRewardClaim;
+            UiManager.instance.ui_ExpeditionPanel[0].gameObject.SetActive(false);
+            this.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (!DataManager.instance.HasEnoughGemsForUse(CalculateGemsForUnlockItem()))
+            {
+                return;
+            }
+            DataManager.instance.DecreaseGems(CalculateGemsForUnlockItem());
 
+            this.gameObject.SetActive(false);
+        }
+
+
+    }
+
+    public void OnClick_Close()
+    {
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            this.gameObject.SetActive(false);
+
+        }
     }
 }

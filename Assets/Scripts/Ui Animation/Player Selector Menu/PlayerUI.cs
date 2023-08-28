@@ -239,6 +239,12 @@ public class PlayerUI : MonoBehaviour
 
     public void OnClick_OpenHeroSelectionPanel()
     {
+        if (DataManager.instance.isTutorialPlaying)
+        {
+            UiManager.instance.ui_tutorial.tutorialState = TutorialState.FirstPlayerDetails;
+        }
+
+
         for (int i = 0; i < all_HerosModel.Length; i++)
         {
             all_HerosModel[i].SetActive(false);

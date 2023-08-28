@@ -131,6 +131,12 @@ public class DailyMissionUI : MonoBehaviour
             list_DailyMission[_index].CheckForRewardIsClaimed();
         }
 
+        list_DailyMission[_index].isDailyMissionFinished = DataManager.instance.GetDailyMissionRewardCollectedState(_index);
+        if (list_DailyMission[_index].isDailyMissionFinished)
+        {
+            list_DailyMission[_index].CheckForDailyMissionRewardCollected();
+        }
+
         list_DailyMission[_index].img_RewardIcon.sprite = listOfDailyMissionSO[_index].img_RewardIcon;
         list_DailyMission[_index].txt_Description.text = listOfDailyMissionSO[_index].str_Description;
         list_DailyMission[_index].txt_RewardAmount.text = listOfDailyMissionSO[_index].rewardAmount.ToString();

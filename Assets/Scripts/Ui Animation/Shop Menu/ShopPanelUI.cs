@@ -81,14 +81,20 @@ public class ShopPanelUI : MonoBehaviour
 
     public void OnClick_OpenChestInfo(int index)
     {
-        if (all_ChestUI[index].GetRewardInfoPanel().activeInHierarchy)
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            all_ChestUI[index].GetRewardInfoPanel().SetActive(false);
+            if (all_ChestUI[index].GetRewardInfoPanel().activeInHierarchy)
+            {
+                all_ChestUI[index].GetRewardInfoPanel().SetActive(false);
+            }
+            else
+            {
+                all_ChestUI[index].GetRewardInfoPanel().SetActive(true);
+            }
         }
-        else
-        {
-            all_ChestUI[index].GetRewardInfoPanel().SetActive(true);
-        }
+
+
+
     }
 
 
@@ -96,81 +102,109 @@ public class ShopPanelUI : MonoBehaviour
 
     public void OnClick_BuyStaterPack(int index)
     {
-        int rawadAmount = RewardManager.Instance.all_StaterPacks[index].all_RewardIcons.Length;
-        List<Sprite> sprites = new List<Sprite>();
-        List<int> rewardAmount = new List<int>();
-        for (int i = 0; i < rawadAmount; i++)
+
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            sprites.Add(RewardManager.Instance.all_StaterPacks[index].all_RewardIcons[i]);
-            rewardAmount.Add(RewardManager.Instance.all_StaterPacks[index].all_RewardsAmount[i]);
+            int rawadAmount = RewardManager.Instance.all_StaterPacks[index].all_RewardIcons.Length;
+            List<Sprite> sprites = new List<Sprite>();
+            List<int> rewardAmount = new List<int>();
+            for (int i = 0; i < rawadAmount; i++)
+            {
+                sprites.Add(RewardManager.Instance.all_StaterPacks[index].all_RewardIcons[i]);
+                rewardAmount.Add(RewardManager.Instance.all_StaterPacks[index].all_RewardsAmount[i]);
+            }
+            UiManager.instance.ui_Reward.ui_StaterPack.SetStaterPackData(sprites, rewardAmount);
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
+
         }
-        UiManager.instance.ui_Reward.ui_StaterPack.SetStaterPackData(sprites, rewardAmount);
-        UiManager.instance.ui_Reward.gameObject.SetActive(true);
+
     }
 
     public void OnClick_BuyChest(int index)
     {
-        int numberOfRewards = RewardManager.Instance.all_ChestData[index].all_ChestData.Length;
 
-        for (int i = 0; i < numberOfRewards; i++)
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            Sprite sprite = RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardIcon;
-            int rewardAmount = RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardAmount;
 
-            List<Sprite> sprites = new List<Sprite>();
-            sprites.Add(RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardIcon);
-            List<int> rewards = new List<int>();
-            rewards.Add(RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardAmount);
-            UiManager.instance.ui_Reward.ui_ChestReward.SetChestRewardData(sprites, rewards);
+            int numberOfRewards = RewardManager.Instance.all_ChestData[index].all_ChestData.Length;
+
+            for (int i = 0; i < numberOfRewards; i++)
+            {
+                Sprite sprite = RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardIcon;
+                int rewardAmount = RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardAmount;
+
+                List<Sprite> sprites = new List<Sprite>();
+                sprites.Add(RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardIcon);
+                List<int> rewards = new List<int>();
+                rewards.Add(RewardManager.Instance.all_ChestData[index].all_ChestData[i].rewardAmount);
+                UiManager.instance.ui_Reward.ui_ChestReward.SetChestRewardData(sprites, rewards);
+            }
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
+            UiManager.instance.ui_Reward.ui_ChestReward.canShowRewardSummaryUI = true;
         }
-        UiManager.instance.ui_Reward.gameObject.SetActive(true);
-        UiManager.instance.ui_Reward.ui_ChestReward.canShowRewardSummaryUI = true;
+
     }
 
     public void OnClick_BuySkipits(int index)
     {
-        if (!DataManager.instance.HasEnoughGemsForUse(all_Skipits_Price[index]))
+
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            //Show Not Enough Gems panel
-            Debug.Log("Not enough Gems");
-            return;
+
+            if (!DataManager.instance.HasEnoughGemsForUse(all_Skipits_Price[index]))
+            {
+                //Show Not Enough Gems panel
+                Debug.Log("Not enough Gems");
+                return;
+            }
+
+
+            Sprite sprite = all_Skipits[index].img_Reward.sprite;
+            int rewardAmount = all_Skipits_Amount[index];
+            DataManager.instance.IncreaseSkipIts(rewardAmount);
+            DataManager.instance.DecreaseGems(all_Skipits_Price[index]);
+            UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
         }
 
-
-        Sprite sprite = all_Skipits[index].img_Reward.sprite;
-        int rewardAmount = all_Skipits_Amount[index];
-        DataManager.instance.IncreaseSkipIts(rewardAmount);
-        DataManager.instance.DecreaseGems(all_Skipits_Price[index]);
-        UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
-        UiManager.instance.ui_Reward.gameObject.SetActive(true);
     }
 
 
     public void OnClick_BuyGold(int index)
     {
 
-        if (!DataManager.instance.HasEnoughGemsForUse(all_Coins_Price[index]))
+        if (!DataManager.instance.isTutorialPlaying)
         {
-            //Show Not Enough Gems panel
-            Debug.Log("Not enough Gems");
-            return;
+
+            if (!DataManager.instance.HasEnoughGemsForUse(all_Coins_Price[index]))
+            {
+                //Show Not Enough Gems panel
+                Debug.Log("Not enough Gems");
+                return;
+            }
+
+            Sprite sprite = all_Coins[index].img_Reward.sprite;
+            int rewardAmount = all_Coins_Amount[index];
+            DataManager.instance.IncreaseCoins(rewardAmount);
+            DataManager.instance.DecreaseGems(all_Coins_Price[index]);
+            UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
         }
 
-        Sprite sprite = all_Coins[index].img_Reward.sprite;
-        int rewardAmount = all_Coins_Amount[index];
-        DataManager.instance.IncreaseCoins(rewardAmount);
-        DataManager.instance.DecreaseGems(all_Coins_Price[index]);
-        UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
-        UiManager.instance.ui_Reward.gameObject.SetActive(true);
     }
 
     public void OnClick_BuyGems(int index)
     {
-        Sprite sprite = all_Gems[index].img_Reward.sprite;
-        int rewardAmount = all_Gems_Amount[index];
-        DataManager.instance.IncreaseGems(rewardAmount);
-        UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
-        UiManager.instance.ui_Reward.gameObject.SetActive(true);
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+
+            Sprite sprite = all_Gems[index].img_Reward.sprite;
+            int rewardAmount = all_Gems_Amount[index];
+            DataManager.instance.IncreaseGems(rewardAmount);
+            UiManager.instance.ui_Reward.ui_itemReward.SetRewardData(sprite, rewardAmount);
+            UiManager.instance.ui_Reward.gameObject.SetActive(true);
+        }
+
     }
 
 }

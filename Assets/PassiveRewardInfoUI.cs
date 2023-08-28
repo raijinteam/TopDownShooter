@@ -15,6 +15,7 @@ public class PassiveRewardInfoUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text_PassiveUpgradeDesc;
     [SerializeField] private CanvasGroup continueButton;
 
+
     [SerializeField] private float fadeAnimationDuration = 0.5f;
 
     private void OnEnable()
@@ -65,6 +66,7 @@ public class PassiveRewardInfoUI : MonoBehaviour
         }
         UiManager.instance.ui_PassiveUpgrade.ui_PassiveUpgradeSelection.SetPassiveUpgradeLevelText();
         UiManager.instance.ui_PassiveUpgrade.ui_PassiveUpgradeSelection.gameObject.SetActive(true);
+        UiManager.instance.ui_PassiveUpgrade.IncreaseCoins();
         this.gameObject.SetActive(false);
     }
 }

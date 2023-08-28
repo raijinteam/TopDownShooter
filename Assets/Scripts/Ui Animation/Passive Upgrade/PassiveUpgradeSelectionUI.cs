@@ -17,6 +17,7 @@ public class PassiveUpgradeSelectionUI : MonoBehaviour
 
     [SerializeField] private Image[] all_PassiveSelectionBG;
     [SerializeField] private TextMeshProUGUI[] all_PassiveUpgradeLevel;
+    [SerializeField] private TextMeshProUGUI txt_PassiveUpgradeCoins;
 
 
     public int selectedPowerupIndex;
@@ -30,6 +31,7 @@ public class PassiveUpgradeSelectionUI : MonoBehaviour
         {
             all_PassiveSelectionBG[i].gameObject.SetActive(false);
         }
+        txt_PassiveUpgradeCoins.text = UiManager.instance.ui_PassiveUpgrade.coinsForUpgrade.ToString();
     }
 
     public void SetAllPassiveUpgradeLevels()
@@ -131,7 +133,15 @@ public class PassiveUpgradeSelectionUI : MonoBehaviour
     public void OnClick_UpgradeButton()
     {
 
+        if (!DataManager.instance.HasEnoughCoinsForUse(UiManager.instance.ui_PassiveUpgrade.coinsForUpgrade))
+            return;
+
+
         CheckForUpgradeMaxLevel();
+
+        UiManager.instance.ui_PassiveUpgrade.IncreaseCoins();
+
+        DataManager.instance.DecreaseCoins(UiManager.instance.ui_PassiveUpgrade.coinsForUpgrade);
 
         btn_Upgrade.interactable = false;
 

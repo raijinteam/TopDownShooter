@@ -47,7 +47,7 @@ public class HomeUI : MonoBehaviour
     private void OnDisable()
     {
 
-        if(all_Players.Length > 0)
+        if (all_Players.Length > 0)
         {
             for (int i = 0; i < all_Players.Length; i++)
             {
@@ -59,9 +59,9 @@ public class HomeUI : MonoBehaviour
     public void SetActiveHeroModel()
     {
         int index = HeroesManager.Instance.currentActiveSelectedHeroIndex;
-        for(int i = 0; i < all_Players.Length; i++)
+        for (int i = 0; i < all_Players.Length; i++)
         {
-            if(i == index)
+            if (i == index)
             {
                 all_Players[i].gameObject.SetActive(true);
             }
@@ -77,7 +77,11 @@ public class HomeUI : MonoBehaviour
 
     public void OnClick_StartGame()
     {
-        print("Game Start");
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            print("Game Start");
+        }
+
     }
 
     #endregion
@@ -87,7 +91,10 @@ public class HomeUI : MonoBehaviour
 
     public void OnClick_SettingPanelOpen()
     {
-        go_SettingPenal.SetActive(true);
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            go_SettingPenal.SetActive(true);
+        }
     }
 
     #endregion
@@ -97,7 +104,10 @@ public class HomeUI : MonoBehaviour
 
     public void OnClick_DailyRewardPanelOpen()
     {
-        go_DailyRewardPanel.SetActive(true);
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            go_DailyRewardPanel.SetActive(true);
+        }
     }
 
     #endregion
@@ -107,7 +117,10 @@ public class HomeUI : MonoBehaviour
 
     public void OnClick_DailyMissionPanelOpen()
     {
-        go_DailyMissionPanel.SetActive(true);
+        if (!DataManager.instance.isTutorialPlaying)
+        {
+            go_DailyMissionPanel.SetActive(true);
+        }
     }
 
     #endregion

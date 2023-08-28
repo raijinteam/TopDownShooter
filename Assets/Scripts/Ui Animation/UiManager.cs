@@ -18,6 +18,7 @@ public class UiManager : MonoBehaviour
     public DailyMissionUI ui_DailyMission;
     public EnergyPurchaseUI ui_EnergyPurchase;
     public ShopPanelUI ui_Shop;
+    public TutorialUI ui_tutorial;
 
     [SerializeField] private bool canChangeMenus;
 
